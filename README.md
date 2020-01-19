@@ -14,3 +14,6 @@ You are going to build a software product that will work with the hardware produ
 Since you do not have the actual “Vantage Vue Integrated Sensor Suite”, you should develop a proxy software that takes its place so that you will to be able to demonstrate and test your product.  
 
 `Hint: The textbook includes a case study on a wilderness weather station where you can benefit while you work on this project.`
+
+## Vantage Vue Console
+![Vantage Vue Console](vantage_vue_console.png)
