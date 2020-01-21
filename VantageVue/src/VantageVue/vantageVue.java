@@ -7,16 +7,12 @@ import java.awt.Toolkit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import javax.swing.BoxLayout;
 import java.awt.Color;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
@@ -61,7 +57,6 @@ public class vantageVue {
 					sleep(1000);
 					}
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -84,7 +79,6 @@ public void date() {
 					sleep(1000);
 					}
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -192,6 +186,7 @@ public void date() {
 		frmVantagevueConsole.setBounds(500, 150, 700, 482);
 		frmVantagevueConsole.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	@SuppressWarnings("serial")
 	private class SwingAction extends AbstractAction {
 		public SwingAction() {
 			putValue(NAME, "SwingAction");
