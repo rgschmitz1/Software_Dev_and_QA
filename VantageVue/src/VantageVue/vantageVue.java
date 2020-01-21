@@ -184,11 +184,11 @@ public void date() {
 		
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setBackground(Color.WHITE);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\Davis.PNG"));
+		lblNewLabel_1.setIcon(new ImageIcon("src\\Davis.PNG"));
 		lblNewLabel_1.setBounds(22, 26, 238, 49);
 		frmVantagevueConsole.getContentPane().add(lblNewLabel_1);
 		frmVantagevueConsole.setTitle("VantageVue Console");
-		frmVantagevueConsole.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\Davis company logo.PNG"));
+		frmVantagevueConsole.setIconImage(Toolkit.getDefaultToolkit().getImage("src\\Davis company logo.PNG"));
 		frmVantagevueConsole.setBounds(500, 150, 700, 482);
 		frmVantagevueConsole.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
