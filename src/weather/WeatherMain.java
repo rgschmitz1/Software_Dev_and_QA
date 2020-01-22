@@ -1,7 +1,5 @@
 package weather;
 import java.awt.EventQueue;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class WeatherMain {
     /**
