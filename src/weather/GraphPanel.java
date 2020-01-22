@@ -19,6 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.event.MouseInputAdapter;
 
 public class GraphPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -819909597063406070L;
 	private BufferedImage myImage;
 	
 	public GraphPanel() {
@@ -31,11 +35,11 @@ public class GraphPanel extends JPanel {
 		super.paintComponent(theGraphics);
 		final Graphics2D g2d = (Graphics2D)theGraphics;
 		
-		 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                  RenderingHints.VALUE_ANTIALIAS_ON);
-g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                  RenderingHints.VALUE_RENDER_QUALITY);
-g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                  RenderingHints.VALUE_STROKE_PURE);
 	}
 }
