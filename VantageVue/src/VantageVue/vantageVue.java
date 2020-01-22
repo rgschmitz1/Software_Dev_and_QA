@@ -218,7 +218,7 @@ public void date() {
 		
 		lblNewLabel_5 = new JLabel("New label");
 		lblNewLabel_5.setBounds(247, 123, 138, 118);
-		lblNewLabel_5.setIcon(new ImageIcon("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\weatherReak.GIF"));
+		lblNewLabel_5.setIcon(new ImageIcon(getClass().getResource("/weatherReak.GIF")));
 		panel.add(lblNewLabel_5);
 		
 		label_1 = new JLabel("");
@@ -233,16 +233,16 @@ public void date() {
 	   
 		label = new JLabel("");
 		label.setBackground(Color.WHITE);
-		label.setIcon(new ImageIcon("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\moonPhase.PNG"));
+		label.setIcon(new ImageIcon(getClass().getResource("/moonPhase.PNG")));
 		label.setBounds(130, 20,400,300);
 		
 		lblNewLabel_1 = new JLabel("New label");
 		lblNewLabel_1.setBackground(Color.WHITE);
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\Davis.PNG"));
+		lblNewLabel_1.setIcon(new ImageIcon(getClass().getResource("/Davis.PNG")));
 		lblNewLabel_1.setBounds(22, 26, 238, 49);
 		jFrame.getContentPane().add(lblNewLabel_1);
 		jFrame.setTitle("VantageVue Console");
-		jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Admin\\Documents\\TCSS 360\\VantageVue\\src\\Davis company logo.PNG"));
+		jFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Davis company logo.PNG")));
 		jFrame.setBounds(500, 150, 700, 482);
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
