@@ -1,6 +1,6 @@
 package weather;
 import java.nio.ByteBuffer;
-// Testing Git from IntelliJ -Ilya 
+//Another Test
 public class WeatherController implements Runnable {
 	private static final int TEMP_OFFSET = 12;
 	private static final int HUMID_OFFSET = 33;
