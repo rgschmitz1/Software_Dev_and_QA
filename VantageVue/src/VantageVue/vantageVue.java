@@ -311,6 +311,7 @@ public void date() {
 		labelMoonPhase.setFont(new Font("Tahoma", Font.PLAIN, 23));
 		labelMoonPhase.setBounds(10, 1,500,50);
 		
+		w.updateMoonPhase();
 		String moonPhase = w.getMoonPhase();
 		label = new JLabel("");
 		label.setBackground(Color.WHITE);
