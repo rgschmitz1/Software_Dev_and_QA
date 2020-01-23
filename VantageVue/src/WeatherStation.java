@@ -21,6 +21,14 @@ public class WeatherStation {
 	private int rain = 0;
 	
 	/**
+	 * conctructor for the object.
+	 * data fields are initialized automatically.
+	 */
+	public WeatherStation() {
+		initializeDataFields();
+	}
+	
+	/**
 	 * increases moon phase by 1, and modded by 8
 	 */
 	public void updateMoonPhase() {
@@ -182,6 +190,19 @@ public class WeatherStation {
 		return getCurrentTemp() - getYesterdayTemp();
 	}
 	
+	/**
+	 * initializes all the data fields for the object
+	 */
+	private void initializeDataFields() {
+		updateBarometer();
+		updateHumidity();
+		//updateMoonPhase(); not actually needed
+		updateRain();
+		updateWindSpeed();
+		for(int i = 0; i < 24; i++) {
+			updateTemp();
+		}
+	}
 	
 	
 }
