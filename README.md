@@ -1,4 +1,4 @@
-# tcss360_project1
+# TCSS360 Project 1
 Project Assignment #01 – Weather Monitoring Station Software
 
 ## Instructions
@@ -9,7 +9,7 @@ Revision History: First release on Jan 15th.
 
 *If you find any errors, inconsistencies, ambiguities, and/or missing information in this description, please let the instructor know about them and make reasonable assumptions and/or apply workarounds to be able to come up with a solution that satisfies the main goals of the assignment.*
 
-You are going to build a software product that will work with the hardware products provided by Davis Instruments (https://www.davisinstruments.com/).  Assume that you have decided to focus only on the Vantage Vue (https://www.davisinstruments.com/solution/vantage-vue/) offered as a low-priced product for beginners. You will develop a standalone software console application for the Vantage Vue Weather Station, which collects all measurements from the “Vantage Vue Integrated Sensor Suite” and replaces the functionality of the custom-built “Vantage Vue Wireless Console” equipment. 
+You are going to build a software product that will work with the hardware products provided by [Davis Instruments](https://www.davisinstruments.com/).  Assume that you have decided to focus only on the [Vantage Vue](https://www.davisinstruments.com/solution/vantage-vue/) offered as a low-priced product for beginners. You will develop a standalone software console application for the Vantage Vue Weather Station, which collects all measurements from the “Vantage Vue Integrated Sensor Suite” and replaces the functionality of the custom-built “Vantage Vue Wireless Console” equipment. 
 
 Since you do not have the actual “Vantage Vue Integrated Sensor Suite”, you should develop a proxy software that takes its place so that you will to be able to demonstrate and test your product.  
 
@@ -19,7 +19,19 @@ Since you do not have the actual “Vantage Vue Integrated Sensor Suite”, you 
 ![Vantage Vue Console](vantage_vue_console.png)
 
 ## Vantage Vue Simulator
-TODO include simulator picture
+![Vantage_Vue_Simulator](vantage_vue_simulator.png)
 
 ### Simulator Controls
-TODO include simulator button layout and features
+- Home
+  - Time & Date
+  - Forecast
+- Moon Phase
+- Weather Center
+  - Temperature & Humidity
+  - Rain
+  - "Change in Weather Since Yesterday" feature
+- Graphs
+  - "This Time Yesterday" feature
+- Barometer
+- Alarms
+  - Wind Speed
