@@ -19,6 +19,7 @@ Since you do not have the actual “Vantage Vue Integrated Sensor Suite”, you 
 ![Vantage Vue Console](vantage_vue_console.png)
 
 ## Vantage Vue Simulator
+TODO update picture to reflect current application
 ![Vantage_Vue_Simulator](vantage_vue_simulator.png)
 
 ### Simulator Controls
@@ -30,8 +31,8 @@ Since you do not have the actual “Vantage Vue Integrated Sensor Suite”, you 
   - Temperature & Humidity
   - Rain
   - "Change in Weather Since Yesterday" feature
+  - Barometer
+  - Alarms
+  - Wind Speed
 - Graphs
   - "This Time Yesterday" feature
-- Barometer
-- Alarms
-  - Wind Speed
