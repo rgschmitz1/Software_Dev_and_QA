@@ -1,8 +1,5 @@
 package weather;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -29,15 +26,17 @@ public class WeatherGUI extends JFrame {
      * The number of moon phase images there are, will be used to create the ImageIcon array.
      */
     private static final int NUM_IMAGES = 8;
-	
+
     private JLabel tempReadout;
     private JLabel humidReadout;
     private JLabel pressureReadout;
+    private GraphPanel graphPanel;
+    private WindPanel windPanel;
     private JLabel moonReadout;
     private JLabel moonLabel;
     private ImageIcon[] images = new ImageIcon[NUM_IMAGES];
 
-    
+
     /**
      * The method that will initialize the GUI to its default starting state.
      */
@@ -75,6 +74,10 @@ public class WeatherGUI extends JFrame {
         pressureReadout = new JLabel("-- in");
         pressurePanel.add(pressureReadout);
 
+        graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
+        windPanel = new WindPanel(getHeight()/3);
+
+
         JPanel moonPanel = new JPanel();
         moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         moonReadout = new JLabel();
@@ -85,9 +88,11 @@ public class WeatherGUI extends JFrame {
         add(tempPanel);
         add(humidPanel);
         add(pressurePanel);
+        add(graphPanel);
+        add(windPanel);
         add(moonPanel);
 
-        
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -95,6 +100,9 @@ public class WeatherGUI extends JFrame {
     public void setTemp(int temp) {
     	String raw = Integer.toString(temp);
     	tempReadout.setText(raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
+    	if (graphPanel != null) {
+    		graphPanel.updateDayTemp(temp);
+    	}
     }
     
     public void setHumid(int humid) {
@@ -105,6 +113,10 @@ public class WeatherGUI extends JFrame {
     	String raw = Integer.toString(pressure);
     	pressureReadout.setText(raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
     }
+
+	public void setWind(int windspd, int winddir) {
+		windPanel.updateWind(windspd, winddir);
+	}
 
     /**
      * Method creates the 8 moon phase icons and all the moon phase names.
