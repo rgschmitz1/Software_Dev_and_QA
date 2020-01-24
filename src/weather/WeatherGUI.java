@@ -1,13 +1,12 @@
 package weather;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class WeatherGUI extends JFrame {
     /**
@@ -25,10 +24,19 @@ public class WeatherGUI extends JFrame {
      * application window when it first opens.
      */
     private static final double SCALE = 1 / 3.0;
+
+    /**
+     * The number of moon phase images there are, will be used to create the ImageIcon array.
+     */
+    private static final int NUM_IMAGES = 8;
 	
     private JLabel tempReadout;
     private JLabel humidReadout;
     private JLabel pressureReadout;
+    private JLabel moonReadout;
+    private JLabel moonLabel;
+    private ImageIcon[] images = new ImageIcon[NUM_IMAGES];
+
     
     /**
      * The method that will initialize the GUI to its default starting state.
@@ -66,10 +74,19 @@ public class WeatherGUI extends JFrame {
         pressurePanel.setBorder(BorderFactory.createLineBorder(Color.black));
         pressureReadout = new JLabel("-- in");
         pressurePanel.add(pressureReadout);
-        
+
+        JPanel moonPanel = new JPanel();
+        moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        moonReadout = new JLabel();
+        moonLabel = new JLabel();
+        moonPanel.add(moonLabel);
+        moonPanel.add(moonReadout);
+
         add(tempPanel);
         add(humidPanel);
         add(pressurePanel);
+        add(moonPanel);
+
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -87,5 +104,32 @@ public class WeatherGUI extends JFrame {
     public void setPressure(int pressure) {
     	String raw = Integer.toString(pressure);
     	pressureReadout.setText(raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
+    }
+
+    /**
+     * Method creates the 8 moon phase icons and all the moon phase names.
+     * @param moon the integer value indicating which moon to show.
+     *             Comes from WeatherController.java
+     */
+    public void setMoonPhase(int moon) {
+        //Create array of lunar choices lunar phase choices.
+        String[] phases = { "New", "Waxing Crescent", "First Quarter",
+                "Waxing Gibbous", "Full", "Waning Gibbous",
+                "Third Quarter", "Waning Crescent" };
+
+        //Retrieves the images and places them into an ImageIcon array.
+        for (int i = 0; i < NUM_IMAGES; i++) {
+            String imageName = "image" + i + ".png";
+            URL url = getClass().getResource(String.format("/Lunar_Phases/%s", imageName));
+
+            ImageIcon icon = new ImageIcon(url);
+            Image image =icon.getImage();
+            Image newImg = image.getScaledInstance(50,50, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(newImg);
+            images[i] = resizedIcon;
+        }
+
+        moonReadout.setText(phases[moon]);
+        moonLabel.setIcon(images[moon]);
     }
 }

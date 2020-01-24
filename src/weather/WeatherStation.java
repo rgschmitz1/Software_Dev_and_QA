@@ -22,7 +22,7 @@ public class WeatherStation{
 	private static final int MAX_PRESSURE = 31000;
 	private static final double PRESSURE_DEV = 200.0;
 	private static final int PRESSURE_OFFSET = 7;
-	
+
 	public WeatherStation() {
 		random = new Random();
 		temp = MIN_TEMP + random.nextInt(MAX_TEMP - MIN_TEMP);

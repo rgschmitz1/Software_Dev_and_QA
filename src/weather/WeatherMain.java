@@ -1,5 +1,6 @@
 package weather;
 import java.awt.EventQueue;
+import java.io.IOException;
 
 public class WeatherMain {
     /**
