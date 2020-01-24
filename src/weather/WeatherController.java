@@ -8,12 +8,10 @@ public class WeatherController implements Runnable {
 	private static final int PRESSURE_OFFSET = 7;
 	private static final int WINDSPD_OFFSET = 14;
 	private static final int WINDDIR_OFFSET = 16;
-
 	private static final int MAX_MOON_PHASE = 8;
 
 	private WeatherStation station;
 	private WeatherGUI gui;
-	private Random random;
 
 	public WeatherController(WeatherStation station, WeatherGUI gui) {
 		this.station = station;
@@ -67,7 +65,7 @@ public class WeatherController implements Runnable {
 
 	// generate random moon phase. using random(0-8) to follow all the moon phases.
 	public int extractMoonPhase() {
-		random = new Random();
+		Random random = new Random();
 		return random.nextInt(MAX_MOON_PHASE);
 	}
 }
