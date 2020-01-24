@@ -29,6 +29,8 @@ public class WeatherGUI extends JFrame {
     private JLabel tempReadout;
     private JLabel humidReadout;
     private JLabel pressureReadout;
+    private GraphPanel graphPanel;
+    private WindPanel windPanel;
     
     /**
      * The method that will initialize the GUI to its default starting state.
@@ -67,9 +69,14 @@ public class WeatherGUI extends JFrame {
         pressureReadout = new JLabel("-- in");
         pressurePanel.add(pressureReadout);
         
+        graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
+        windPanel = new WindPanel(getHeight()/3);
+        
         add(tempPanel);
         add(humidPanel);
         add(pressurePanel);
+        add(graphPanel);
+        add(windPanel);
         
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -78,6 +85,9 @@ public class WeatherGUI extends JFrame {
     public void setTemp(int temp) {
     	String raw = Integer.toString(temp);
     	tempReadout.setText(raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
+    	if (graphPanel != null) {
+    		graphPanel.updateDayTemp(temp);
+    	}
     }
     
     public void setHumid(int humid) {
@@ -88,4 +98,8 @@ public class WeatherGUI extends JFrame {
     	String raw = Integer.toString(pressure);
     	pressureReadout.setText(raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
     }
+
+	public void setWind(int windspd, int winddir) {
+		windPanel.updateWind(windspd, winddir);
+	}
 }
