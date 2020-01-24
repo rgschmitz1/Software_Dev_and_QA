@@ -1,30 +1,19 @@
 package weather;
 
-import javax.swing.JPanel;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
+
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputAdapter;
-import java.awt.Shape;
-import java.awt.geom.*;
-import java.awt.geom.Line2D.Double;
 
 public class GraphPanel extends JPanel {
 	/**
