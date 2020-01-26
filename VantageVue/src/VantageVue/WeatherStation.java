@@ -9,7 +9,7 @@ package VantageVue;
 public class WeatherStation {
 	/** int to keep track of the moon phase [0,7] */
 	private int moonPhase = 0;
-	/** int array to keep track of the Tempeture. [-20,110] */
+	/** int array to keep track of the temperature. [-20,110] */
 	private int[] tempArr = new int[25];
 	/** int to keep track of the humidity [0,2] */
 	private int humid = 0;
@@ -136,12 +136,15 @@ public class WeatherStation {
 	 * of the array keeps track of where the head of the queue is.
 	 */
 	public void updateTemp() {
-		if (tempArr[23] == 0) {
+		if (tempArr[23] == 0 && tempArr[24] == 0) {
 			tempArr[0] = (int) ((Math.random() * 130) - 20); //max temp = 110
 			tempArr[24] = 1;
 		}
 		else {
-			tempArr[tempArr[24]] = tempArr[(tempArr[24] + 23) % 24] + (int) (Math.random() * 15 - 7.5);
+			// Force temperature to stay in the range of -20 to 110
+			do {
+				tempArr[tempArr[24]] = tempArr[(tempArr[24] + 23) % 24] + (int) ((Math.random() * 15) - 7.5);
+			} while (tempArr[tempArr[24]] < -20 || tempArr[tempArr[24]] > 110);
 			tempArr[24] = (tempArr[24] + 1) % 24;
 		}		
 	}
