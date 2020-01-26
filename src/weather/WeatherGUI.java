@@ -35,6 +35,11 @@ public class WeatherGUI extends JFrame {
     private JLabel moonReadout;
     private JLabel moonLabel;
     private ImageIcon[] images = new ImageIcon[NUM_IMAGES];
+    private JLabel rainReadout;
+    private JLabel dateReadout;
+    private JLabel timeReadout;
+    private JLabel sunriseReadout;
+    private JLabel sunsetReadout;
 
 
     /**
@@ -77,20 +82,50 @@ public class WeatherGUI extends JFrame {
         graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
         windPanel = new WindPanel(getHeight()/3);
 
-
         JPanel moonPanel = new JPanel();
         moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         moonReadout = new JLabel();
         moonLabel = new JLabel();
         moonPanel.add(moonLabel);
         moonPanel.add(moonReadout);
+	    
+	JPanel rainPanel = new JPanel();
+        rainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        rainReadout = new JLabel("Rain: -- in./hr.");
+        rainPanel.add(rainReadout);
+        
+        JPanel datePanel = new JPanel();
+        datePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        dateReadout = new JLabel("Date: ---, --- --, ----");
+        datePanel.add(dateReadout);
+        
+        JPanel timePanel = new JPanel();
+        timePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        timeReadout = new JLabel("Time: --:--:-- a.m.");
+        timePanel.add(timeReadout);  
+        
+        JPanel sunrisePanel = new JPanel();
+        sunrisePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        sunriseReadout = new JLabel("Sunrise: --:-- a.m.");
+        sunrisePanel.add(sunriseReadout); 
+        
+        JPanel sunsetPanel = new JPanel();
+        sunsetPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        sunsetReadout = new JLabel("Sunset: --:-- p.m.");
+        sunsetPanel.add(sunsetReadout);  
 
         add(tempPanel);
         add(humidPanel);
         add(pressurePanel);
+	add(rainPanel);
+        add(datePanel);
+        add(timePanel);
+        add(sunrisePanel);
+        add(sunsetPanel);
         add(graphPanel);
         add(windPanel);
         add(moonPanel);
+
 
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -143,5 +178,50 @@ public class WeatherGUI extends JFrame {
 
         moonReadout.setText(phases[moon]);
         moonLabel.setIcon(images[moon]);
+    }
+	
+    // set the current rainfall rate
+    public void setRain(int rain) {
+    	String raw = Integer.toString(rain);
+    	rainReadout.setText("Rain: " + raw.substring(0, raw.length()-1) + "." + raw.substring(raw.length()-1) + " in./hr.");
+    }
+    
+    // set the current date
+    public void setDate(Date date) {
+    	String raw = date.toString();
+    	dateReadout.setText("Date: " + raw.substring(0, 3) + ", " + raw.substring(4, 7) + " "
+    		+ raw.substring(8, 10) + ", " + raw.substring(raw.length()-4));
+    	
+    }
+    
+    // set the current time
+    public void setTime(Date time) {
+    	String raw = time.toString();
+    	int timePeriod = Integer.valueOf(raw.substring(11, 13));
+    	if (timePeriod < 12) {
+    		if (timePeriod == 0) {
+    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " a.m.");
+    		} else {
+    			timeReadout.setText("Time: " + raw.substring(11, 19) + " a.m.");
+    		}
+    	} else {
+    		if (timePeriod == 12) {
+    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " p.m.");
+    		} else {
+    			timeReadout.setText("Time: " + Integer.toString((timePeriod-12)) + raw.substring(13, 19) + " p.m.");
+    		}
+    	}	
+    }
+    
+    // set the sunrise time
+    public void setSunrise(int sunrise) {
+    	sunriseReadout.setText("Sunrise: 0" + Integer.toString(sunrise/100) + ":" 
+    		+ Integer.toString(sunrise%100) + " a.m.");
+    }
+    
+    // set the sunset time
+    public void setSunset(int sunset) {
+    	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
+        		+ Integer.toString(sunset%100) + " p.m.");
     }
 }
