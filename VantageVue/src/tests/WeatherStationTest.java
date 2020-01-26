@@ -4,17 +4,16 @@
  * @author Bob Schmitz
  * @version 1-25-2020
  */
+
 package tests;
 
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import VantageVue.WeatherStation;
 
-/**
- * @author Bob Schmitz
- *
- */
 public class WeatherStationTest {
 	
 	/** Setup WeatherStation object **/
@@ -23,7 +22,7 @@ public class WeatherStationTest {
     /**
      * A method to initialize the test fixture before each test.
      */
-	@Before
+	@BeforeEach
 	public void setup() {
 		myWeatherStation = new WeatherStation();
 	}
@@ -156,3 +155,4 @@ public class WeatherStationTest {
 		}
 	}
 }
+
