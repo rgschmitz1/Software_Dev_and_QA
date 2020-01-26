@@ -8,6 +8,9 @@ public class WeatherStation{
 	private int pressure;
 	private int windspd;
 	private int winddir;
+	private int rain;
+	private int sunrise;
+	private int sunset;
 	private Random random;
 	
 	private static final int MIN_TEMP = 100;
@@ -34,6 +37,14 @@ public class WeatherStation{
 	private static final double WINDDIR_DEV = 10.0;
 	private static final int WINDDIR_OFFSET = 16;
 	
+	private static final int MIN_RAIN = 0;
+	private static final int MAX_RAIN = 100;
+	private static final double RAIN_DEV = 4;
+	private static final int RAIN_OFFSET = 44;
+	
+	private static final int SUNRISE_OFFSET = 91;
+	private static final int SUNSET_OFFSET = 93;
+	
 	public WeatherStation() {
 		random = new Random();
 		temp = MIN_TEMP + random.nextInt(MAX_TEMP - MIN_TEMP);
@@ -41,6 +52,9 @@ public class WeatherStation{
 		pressure = MIN_PRESSURE + random.nextInt(MAX_PRESSURE - MIN_PRESSURE);
 		windspd = MIN_WINDSPD + random.nextInt(MAX_WINDSPD - MIN_WINDSPD);
 		winddir = random.nextInt(WINDDIR_MOD);
+		rain = MIN_RAIN + random.nextInt(MAX_RAIN - MIN_RAIN);
+		sunrise = (100*(5 + random.nextInt(3))) + random.nextInt(60);
+		sunset = (100*(5 + random.nextInt(3))) + random.nextInt(60);
 	}
 	
 	public byte[] getNext() {
@@ -56,6 +70,11 @@ public class WeatherStation{
 			buf.putChar(PRESSURE_OFFSET, (char)pressure);
 			buf.put(WINDSPD_OFFSET, (byte)windspd);
 			buf.putChar(WINDDIR_OFFSET, (char)winddir);
+			buf.put(RAIN_OFFSET, (byte)rain);
+			buf.put(SUNRISE_OFFSET, (byte)(sunrise/100));
+			buf.put(SUNRISE_OFFSET + 1, (byte)(sunrise%100));
+			buf.put(SUNSET_OFFSET, (byte)(sunset/100));
+			buf.put(SUNSET_OFFSET + 1, (byte)(sunset%100));
 			
 			return packet;
 		} catch (InterruptedException e) {
@@ -69,11 +88,13 @@ public class WeatherStation{
 		pressure += (int)(random.nextGaussian() * PRESSURE_DEV + 0.5);
 		windspd += (int)(random.nextGaussian() * WINDSPD_DEV + 0.5);
 		winddir += (int)(random.nextGaussian() * WINDDIR_DEV + 0.5);
+		rain += (int)(random.nextGaussian() * RAIN_DEV + 0.5);
 		
 		temp = Math.max(Math.min(temp, MAX_TEMP), MIN_TEMP);
 		humid = Math.max(Math.min(humid, MAX_HUMID), MIN_HUMID);
 		pressure = Math.max(Math.min(pressure, MAX_PRESSURE), MIN_PRESSURE);
 		windspd = Math.max(Math.min(windspd, MAX_WINDSPD), MIN_WINDSPD);
 		winddir = (winddir + WINDDIR_MOD)%WINDDIR_MOD;
+		rain = Math.max(Math.min(rain, MAX_RAIN), MIN_RAIN);
 	}
 }
