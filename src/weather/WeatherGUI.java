@@ -1,17 +1,9 @@
 package weather;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.net.URL;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class WeatherGUI extends JFrame {
     /**
@@ -66,8 +58,9 @@ public class WeatherGUI extends JFrame {
         setIconImage(myIcon.getImage());*/
         
         this.setTitle(TITLE);
-        this.setLayout(new FlowLayout());
-        
+//        this.setLayout(new FlowLayout());
+        this.setLayout(new BorderLayout());
+
         // Sets the initial size and position of the application window
         setSize((int) (screenDim.width * SCALE), (int) (screenDim.height * SCALE));
         setLocationRelativeTo(null);
@@ -88,15 +81,16 @@ public class WeatherGUI extends JFrame {
         pressurePanel.add(pressureReadout);
 
         graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
-        windPanel = new WindPanel(getHeight()/3);
-
+        windPanel = new WindPanel(getHeight()/9);
 
         JPanel moonPanel = new JPanel();
-        moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+//        moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         moonReadout = new JLabel();
+        moonReadout.setPreferredSize(new Dimension(110, 50));
         moonLabel = new JLabel();
         moonPanel.add(moonLabel);
         moonPanel.add(moonReadout);
+        moonPanel.setPreferredSize(new Dimension(190,50));
          
         JPanel rainPanel = new JPanel();
         rainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -123,17 +117,46 @@ public class WeatherGUI extends JFrame {
         sunsetReadout = new JLabel("Sunset: --:-- p.m.");
         sunsetPanel.add(sunsetReadout);
 
-        add(tempPanel);
-        add(humidPanel);
-        add(pressurePanel);
-        add(rainPanel);
-        add(datePanel);
-        add(timePanel);
-        add(sunrisePanel);
-        add(sunsetPanel);    
-        add(graphPanel);
-        add(windPanel);
-        add(moonPanel);
+        JPanel northLayoutPanel = new JPanel();
+        northLayoutPanel.setLayout(new FlowLayout());
+
+        JPanel eastLayoutPanel = new JPanel();
+        eastLayoutPanel.setLayout(new BoxLayout(eastLayoutPanel, BoxLayout.Y_AXIS));
+
+        JPanel southLayoutPanel = new JPanel();
+        southLayoutPanel.setLayout(new GridLayout(2, 4, 40, 20));
+
+        // Example Button addition into the South Panel Layout
+        // ADD BUTTONS TO SOUTH PANEL.
+        JButton testButton1 = new JButton("Button1");
+        JButton testButton2 = new JButton("Button2");
+        JButton testButton3 = new JButton("Button3");
+        JButton testButton4 = new JButton("Button4");
+
+        southLayoutPanel.add(testButton1);
+        southLayoutPanel.add(testButton2);
+        southLayoutPanel.add(testButton3);
+        southLayoutPanel.add(testButton4);
+
+
+        northLayoutPanel.add(tempPanel);
+        northLayoutPanel.add(humidPanel);
+        northLayoutPanel.add(pressurePanel);
+        northLayoutPanel.add(rainPanel);
+        northLayoutPanel.add(datePanel);
+        northLayoutPanel.add(timePanel);
+        northLayoutPanel.add(sunrisePanel);
+        northLayoutPanel.add(sunsetPanel);
+
+        eastLayoutPanel.add(windPanel);
+        eastLayoutPanel.add(moonPanel);
+
+
+        add(northLayoutPanel, BorderLayout.NORTH);
+        add(eastLayoutPanel, BorderLayout.EAST);
+        add(southLayoutPanel, BorderLayout.SOUTH);
+        add(graphPanel, BorderLayout.CENTER);
+
 
 
 
