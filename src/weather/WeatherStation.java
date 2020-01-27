@@ -11,6 +11,7 @@ public class WeatherStation{
 	private int rain;
 	private int sunrise;
 	private int sunset;
+	
 	private Random random;
 	
 	private static final int MIN_TEMP = 100;

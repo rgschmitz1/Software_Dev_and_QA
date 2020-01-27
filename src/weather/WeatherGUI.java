@@ -1,9 +1,17 @@
 package weather;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.net.URL;
+import java.util.Date;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class WeatherGUI extends JFrame {
     /**
@@ -20,7 +28,7 @@ public class WeatherGUI extends JFrame {
      * The proportion of the screen's dimensions by which to scale the
      * application window when it first opens.
      */
-    private static final double SCALE = 1 / 3.0;
+    private static final double SCALE = 1 / 2.0;
 
     /**
      * The number of moon phase images there are, will be used to create the ImageIcon array.
@@ -82,14 +90,15 @@ public class WeatherGUI extends JFrame {
         graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
         windPanel = new WindPanel(getHeight()/3);
 
+
         JPanel moonPanel = new JPanel();
         moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         moonReadout = new JLabel();
         moonLabel = new JLabel();
         moonPanel.add(moonLabel);
         moonPanel.add(moonReadout);
-	    
-	JPanel rainPanel = new JPanel();
+         
+        JPanel rainPanel = new JPanel();
         rainPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         rainReadout = new JLabel("Rain: -- in./hr.");
         rainPanel.add(rainReadout);
@@ -112,16 +121,16 @@ public class WeatherGUI extends JFrame {
         JPanel sunsetPanel = new JPanel();
         sunsetPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         sunsetReadout = new JLabel("Sunset: --:-- p.m.");
-        sunsetPanel.add(sunsetReadout);  
+        sunsetPanel.add(sunsetReadout);
 
         add(tempPanel);
         add(humidPanel);
         add(pressurePanel);
-	add(rainPanel);
+        add(rainPanel);
         add(datePanel);
         add(timePanel);
         add(sunrisePanel);
-        add(sunsetPanel);
+        add(sunsetPanel);    
         add(graphPanel);
         add(windPanel);
         add(moonPanel);
@@ -179,7 +188,7 @@ public class WeatherGUI extends JFrame {
         moonReadout.setText(phases[moon]);
         moonLabel.setIcon(images[moon]);
     }
-	
+    
     // set the current rainfall rate
     public void setRain(int rain) {
     	String raw = Integer.toString(rain);
