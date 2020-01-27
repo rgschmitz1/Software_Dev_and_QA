@@ -1,5 +1,5 @@
 /**
- * WeatherStation unit test
+ * WeatherStation junit test
  * 
  * @author Bob Schmitz
  * @version 1-25-2020
@@ -119,6 +119,21 @@ public class WeatherStationTest {
 		for (int i=0; i < 1000; i++) {
 			myWeatherStation.updateWindSpeed();
 			assertEquals(17.5, myWeatherStation.getWindSpeed(), 17.5);
+		}
+	}
+	
+	/**
+	 * Test updateTemp and getTemp, must be between -20 to 110
+	 */
+	@Test
+	public void testGetTemp() {
+		int[] tempArray;
+		for (int i=0; i < 100; i++) {
+			myWeatherStation.updateTemp();
+			tempArray = myWeatherStation.getTemp();
+			for (int theTemp : tempArray) {
+				assertEquals(45, theTemp, 65);	
+			}
 		}
 	}
 	

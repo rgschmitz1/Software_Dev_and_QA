@@ -1,4 +1,3 @@
-package VantageVue;
 /**
  * Class to create the GUI for the displaying of information from the Vantage Vue Weather Station.
  * 
@@ -6,6 +5,9 @@ package VantageVue;
  * @version 1.0 1-23-2020
  *
  */
+
+package VantageVue;
+
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import java.awt.Toolkit;

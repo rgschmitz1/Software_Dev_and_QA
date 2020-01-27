@@ -1,4 +1,3 @@
-package VantageVue;
 /**
  * Class to simulate data from Davis vantage-vue weather station.
  * 
@@ -6,6 +5,9 @@ package VantageVue;
  * @version 1.0 1-22-2020
  *
  */
+
+package VantageVue;
+
 public class WeatherStation {
 	/** int to keep track of the moon phase [0,7] */
 	private int moonPhase = 0;
