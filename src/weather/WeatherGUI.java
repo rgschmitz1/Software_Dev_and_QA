@@ -1,26 +1,33 @@
 package weather;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class WeatherGUI extends JFrame {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 562997229458227901L;
-
+	
 	/**
      * The title for the application window.
      */
 	private static final String TITLE = "Weather Station";
-	
-    /**
-     * The proportion of the screen's dimensions by which to scale the
-     * application window when it first opens.
-     */
-    private static final double SCALE = 1 / 2.0;
 
     /**
      * The number of moon phase images there are, will be used to create the ImageIcon array.
@@ -46,38 +53,28 @@ public class WeatherGUI extends JFrame {
      * The method that will initialize the GUI to its default starting state.
      */
     public void start() {
-        final Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-        
-        // Reads the icon into myIcon. Performed this particular way in order to facilitate
-        // deploying the application into a runnable JAR file.
-        /*final InputStream is = getClass().getClassLoader().getResourceAsStream("scv.png");
-        try {
-            myIcon = new ImageIcon(is.readAllBytes());
-        } catch (final IOException e) {
-        }
-        setIconImage(myIcon.getImage());*/
         
         this.setTitle(TITLE);
-//        this.setLayout(new FlowLayout());
+        //this.setLayout(new FlowLayout());
         this.setLayout(new BorderLayout());
 
         // Sets the initial size and position of the application window
-        setSize((int) (screenDim.width * SCALE), (int) (screenDim.height * SCALE));
+        setSize(950, 500);
         setLocationRelativeTo(null);
         
         JPanel tempPanel = new JPanel();
         tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        tempReadout = new JLabel("-- °F");
+        tempReadout = new JLabel("Temp: -- °F");
         tempPanel.add(tempReadout);
         
         JPanel humidPanel = new JPanel();
         humidPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        humidReadout = new JLabel("-- %");
+        humidReadout = new JLabel("Humid: -- %");
         humidPanel.add(humidReadout);
         
         JPanel pressurePanel = new JPanel();
         pressurePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        pressureReadout = new JLabel("-- in");
+        pressureReadout = new JLabel("Pressure: -- in");
         pressurePanel.add(pressureReadout);
 
         graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
@@ -128,16 +125,15 @@ public class WeatherGUI extends JFrame {
 
         // Example Button addition into the South Panel Layout
         // ADD BUTTONS TO SOUTH PANEL.
-        JButton testButton1 = new JButton("Button1");
-        JButton testButton2 = new JButton("Button2");
-        JButton testButton3 = new JButton("Button3");
-        JButton testButton4 = new JButton("Button4");
-
-        southLayoutPanel.add(testButton1);
-        southLayoutPanel.add(testButton2);
-        southLayoutPanel.add(testButton3);
-        southLayoutPanel.add(testButton4);
-
+        JButton tempButton = new JButton(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Graph Temperature"));
+        JButton pressureButton = new JButton(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Graph Pressure"));
+        JButton humidityButton = new JButton(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Graph Humidity"));
+        JButton rainfallButton = new JButton(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Graph Rainfall"));
+        
+        southLayoutPanel.add(tempButton);
+        southLayoutPanel.add(pressureButton);
+        southLayoutPanel.add(humidityButton);
+        southLayoutPanel.add(rainfallButton);
 
         northLayoutPanel.add(tempPanel);
         northLayoutPanel.add(humidPanel);
@@ -150,15 +146,11 @@ public class WeatherGUI extends JFrame {
 
         eastLayoutPanel.add(windPanel);
         eastLayoutPanel.add(moonPanel);
-
-
+        
         add(northLayoutPanel, BorderLayout.NORTH);
         add(eastLayoutPanel, BorderLayout.EAST);
         add(southLayoutPanel, BorderLayout.SOUTH);
         add(graphPanel, BorderLayout.CENTER);
-
-
-
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -166,19 +158,25 @@ public class WeatherGUI extends JFrame {
     
     public void setTemp(int temp) {
     	String raw = Integer.toString(temp);
-    	tempReadout.setText(raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
+    	tempReadout.setText("Temp: " + raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
     	if (graphPanel != null) {
-    		graphPanel.updateDayTemp(temp);
+    		graphPanel.updateSensorValue(GraphPanel.TEMP_SENSOR, temp);
     	}
     }
     
     public void setHumid(int humid) {
-    	humidReadout.setText(Integer.toString(humid)+" %");
+    	humidReadout.setText("Humid: " + Integer.toString(humid)+" %");
+    	if (graphPanel != null) {
+    		graphPanel.updateSensorValue(GraphPanel.HUMIDITY_SENSOR, humid);
+    	}
     }
     
     public void setPressure(int pressure) {
     	String raw = Integer.toString(pressure);
-    	pressureReadout.setText(raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
+    	pressureReadout.setText("Pressure:" + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
+    	if (graphPanel != null) {
+    		graphPanel.updateSensorValue(GraphPanel.PRESSURE_SENSOR, pressure);
+    	}
     }
 
 	public void setWind(int windspd, int winddir) {
@@ -216,6 +214,9 @@ public class WeatherGUI extends JFrame {
     public void setRain(int rain) {
     	String raw = Integer.toString(rain);
     	rainReadout.setText("Rain: " + raw.substring(0, raw.length()-1) + "." + raw.substring(raw.length()-1) + " in./hr.");
+    	if (graphPanel != null) {
+    		graphPanel.updateSensorValue(GraphPanel.RAINFALL_SENSOR, rain);
+    	}
     }
     
     // set the current date
@@ -255,5 +256,23 @@ public class WeatherGUI extends JFrame {
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
         		+ Integer.toString(sunset%100) + " p.m.");
+    }
+    
+    private class GraphButtonAction extends AbstractAction {
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3612147189752191515L;
+		private int type;
+    	
+    	public GraphButtonAction(int type, String buttonName) {
+    		super(buttonName);
+    		this.type = type;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			graphPanel.setSensorType(type);
+		}
     }
 }

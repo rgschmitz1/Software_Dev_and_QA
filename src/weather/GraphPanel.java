@@ -23,10 +23,20 @@ public class GraphPanel extends JPanel {
 	
 	private static final int NUM_DIVS = 10;
 	
+	public static final int TEMP_SENSOR = 0;
+	public static final int PRESSURE_SENSOR = 1;
+	public static final int HUMIDITY_SENSOR = 2;
+	public static final int RAINFALL_SENSOR = 3;
+	
+	private static final int[] SENSOR_MINS = {100, 29000, 0, 0};
+	private static final int[] SENSOR_MAXES = {1000, 31000, 100, 100};
+	private static final String[] SENSOR_NAMES = {"Temp", "Pressure", "Humidity", "Rainfall"};
+	
 	private Stroke myStroke;
 	private List<double[]> lines;
 	private List<Integer> prevVals;
-	private int index;
+	private int index;	
+	private int sensorType;
 	
 	public GraphPanel(int width, int height) {
 		super();
@@ -41,14 +51,17 @@ public class GraphPanel extends JPanel {
 		for (int i=0; i<NUM_DIVS; i++) {
 			prevVals.add(null);
 		}
+		sensorType = TEMP_SENSOR;
 		
 		index = 0;
 	}
 	
-	public void updateDayTemp(int temp) {
-		prevVals.set(index++, temp);
-		index %= NUM_DIVS;
-		repaint();
+	public void updateSensorValue(int type, int value) {
+		if (type == sensorType) {
+			prevVals.set(index++, value);
+			index %= NUM_DIVS;
+			repaint();
+		}
 	}
 	
 	@Override
@@ -75,17 +88,37 @@ public class GraphPanel extends JPanel {
 		
 		g2d.translate(0, getHeight());
 		g2d.rotate(-Math.PI/2);
-		g2d.drawString("temp", (float)(2*divH), (float)(divW/2));
+		g2d.drawString(SENSOR_NAMES[sensorType], (float)(2*divH), (float)(divW/2));
 		g2d.rotate(Math.PI/2);
 		g2d.translate(0, -getHeight());
 		
+		int min = SENSOR_MINS[sensorType];
+		int max = SENSOR_MAXES[sensorType];
 		for (int i=0; i<NUM_DIVS; i++) {
-			Integer temp = prevVals.get((index+i)%NUM_DIVS);
-			if (temp != null) {
-				g2d.draw(new Rectangle.Double(divW + i*divW, getHeight()-(temp/1000.0)*getHeight(), divW, (temp/1000.0)*getHeight()-divH));
+			Integer val = prevVals.get((index+i)%NUM_DIVS);
+			if (val != null) {
+				double yOffset = ((val-min)/(double)(max-min)) * (getHeight() - divH);
+				g2d.draw(new Rectangle.Double(divW + i*divW,
+						getHeight()-divH-yOffset,
+						divW,
+						yOffset)
+					);
 			}
 		}
 		
 		g2d.dispose();
+	}
+
+	public void setSensorType(int type) {
+		if (type != sensorType) {
+			sensorType = type;
+			for (int i=0; i<prevVals.size(); i++) {
+				prevVals.set(i, null);
+			}
+		}
+	}
+	
+	public int getSensorType() {
+		return sensorType;
 	}
 }

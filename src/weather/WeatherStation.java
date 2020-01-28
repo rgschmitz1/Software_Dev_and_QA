@@ -66,16 +66,16 @@ public class WeatherStation{
 			byte[] packet = new byte[99];
 			ByteBuffer buf = ByteBuffer.wrap(packet);
 			
-			buf.putChar(TEMP_OFFSET, (char)temp);
-			buf.put(HUMID_OFFSET, (byte)humid);
-			buf.putChar(PRESSURE_OFFSET, (char)pressure);
-			buf.put(WINDSPD_OFFSET, (byte)windspd);
+			buf.putChar(TEMP_OFFSET, (char)getTemp());
+			buf.put(HUMID_OFFSET, (byte)getHumid());
+			buf.putChar(PRESSURE_OFFSET, (char)getPressure());
+			buf.put(WINDSPD_OFFSET, (byte)getWindspd());
 			buf.putChar(WINDDIR_OFFSET, (char)winddir);
-			buf.put(RAIN_OFFSET, (byte)rain);
-			buf.put(SUNRISE_OFFSET, (byte)(sunrise/100));
-			buf.put(SUNRISE_OFFSET + 1, (byte)(sunrise%100));
-			buf.put(SUNSET_OFFSET, (byte)(sunset/100));
-			buf.put(SUNSET_OFFSET + 1, (byte)(sunset%100));
+			buf.put(RAIN_OFFSET, (byte)getRain());
+			buf.put(SUNRISE_OFFSET, (byte)(getSunrise()/100));
+			buf.put(SUNRISE_OFFSET + 1, (byte)(getSunrise()%100));
+			buf.put(SUNSET_OFFSET, (byte)(getSunset()/100));
+			buf.put(SUNSET_OFFSET + 1, (byte)(getSunset()%100));
 			
 			return packet;
 		} catch (InterruptedException e) {
@@ -84,18 +84,46 @@ public class WeatherStation{
 	}
 	
 	private void updateSensors() {
-		temp += (int)(random.nextGaussian() * TEMP_DEV + 0.5);
-		humid += (int)(random.nextGaussian() * HUMID_DEV + 0.5);
-		pressure += (int)(random.nextGaussian() * PRESSURE_DEV + 0.5);
-		windspd += (int)(random.nextGaussian() * WINDSPD_DEV + 0.5);
+		temp = getTemp() + (int)(random.nextGaussian() * TEMP_DEV + 0.5);
+		humid = getHumid() + (int)(random.nextGaussian() * HUMID_DEV + 0.5);
+		pressure = getPressure() + (int)(random.nextGaussian() * PRESSURE_DEV + 0.5);
+		windspd = getWindspd() + (int)(random.nextGaussian() * WINDSPD_DEV + 0.5);
 		winddir += (int)(random.nextGaussian() * WINDDIR_DEV + 0.5);
-		rain += (int)(random.nextGaussian() * RAIN_DEV + 0.5);
+		rain = getRain() + (int)(random.nextGaussian() * RAIN_DEV + 0.5);
 		
-		temp = Math.max(Math.min(temp, MAX_TEMP), MIN_TEMP);
-		humid = Math.max(Math.min(humid, MAX_HUMID), MIN_HUMID);
-		pressure = Math.max(Math.min(pressure, MAX_PRESSURE), MIN_PRESSURE);
-		windspd = Math.max(Math.min(windspd, MAX_WINDSPD), MIN_WINDSPD);
+		temp = Math.max(Math.min(getTemp(), MAX_TEMP), MIN_TEMP);
+		humid = Math.max(Math.min(getHumid(), MAX_HUMID), MIN_HUMID);
+		pressure = Math.max(Math.min(getPressure(), MAX_PRESSURE), MIN_PRESSURE);
+		windspd = Math.max(Math.min(getWindspd(), MAX_WINDSPD), MIN_WINDSPD);
 		winddir = (winddir + WINDDIR_MOD)%WINDDIR_MOD;
-		rain = Math.max(Math.min(rain, MAX_RAIN), MIN_RAIN);
+		rain = Math.max(Math.min(getRain(), MAX_RAIN), MIN_RAIN);
+	}
+
+	public int getHumid() {
+		return humid;
+	}
+
+	public int getTemp() {
+		return temp;
+	}
+
+	public int getPressure() {
+		return pressure;
+	}
+
+	public int getWindspd() {
+		return windspd;
+	}
+
+	public int getRain() {
+		return rain;
+	}
+
+	public int getSunrise() {
+		return sunrise;
+	}
+
+	public int getSunset() {
+		return sunset;
 	}
 }
