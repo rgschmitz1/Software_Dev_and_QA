@@ -4,22 +4,26 @@ import java.util.Date;
 import java.util.Random;
 
 public class WeatherController implements Runnable {
+	public static final int MAX_MOON_PHASE = 8;
+	
 	private static final int TEMP_OFFSET = 12;
 	private static final int HUMID_OFFSET = 33;
 	private static final int PRESSURE_OFFSET = 7;
 	private static final int WINDSPD_OFFSET = 14;
 	private static final int WINDDIR_OFFSET = 16;
-	private static final int MAX_MOON_PHASE = 8;
 	private static final int RAIN_OFFSET = 44;
 	private static final int SUNRISE_OFFSET = 91;
 	private static final int SUNSET_OFFSET = 93;
 
+	private Random random = new Random();
+	
 	private WeatherStation station;
 	private WeatherGUI gui;
-
+	
 	public WeatherController(WeatherStation station, WeatherGUI gui) {
 		this.station = station;
 		this.gui = gui;
+		random = new Random();
 	}
 	
 	@Override
@@ -77,8 +81,7 @@ public class WeatherController implements Runnable {
 	}
 
 	// generate random moon phase. using random(0-8) to follow all the moon phases.
-	public int extractMoonPhase() {
-		Random random = new Random();
+	private int extractMoonPhase() {
 		return random.nextInt(MAX_MOON_PHASE);
 	}
 	

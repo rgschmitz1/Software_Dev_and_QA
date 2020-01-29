@@ -7,7 +7,7 @@ import weather.GraphPanel;
 
 /**
  * The JUnit tests for the GraphPanel class.
- * @author neil
+ * @author Group 6
  *
  */
 class GraphPanelTest {
