@@ -164,11 +164,47 @@ public class WeatherGUI extends JFrame {
 
         // Example Button addition into the South Panel Layout
         // ADD BUTTONS TO SOUTH PANEL.
-        JButton tempButton = new JButton(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Graph Temperature"));
-        JButton pressureButton = new JButton(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Graph Pressure"));
-        JButton humidityButton = new JButton(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Graph Humidity"));
-        JButton rainfallButton = new JButton(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Graph Rainfall"));
+        JButton tempButton = new JButton("Graph Temperature");
+        JButton pressureButton = new JButton("Graph Pressure");
+        JButton humidityButton = new JButton("Graph Humidity");
+        JButton rainfallButton = new JButton("Graph Rainfall");
+	JButton windspeedButton = new JButton("Graph Wind Speed");
+		
+        tempButton.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			graphPanel.setSensorType(GraphPanel.TEMP_SENSOR);
+		}
+        });
         
+        pressureButton.addActionListener(new ActionListener() {
+ 		@Override
+ 		public void actionPerformed(ActionEvent e) {
+ 			graphPanel.setSensorType(GraphPanel.PRESSURE_SENSOR);
+ 		}
+         });
+        
+         humidityButton.addActionListener(new ActionListener() {
+ 		@Override
+ 		public void actionPerformed(ActionEvent e) {
+ 			graphPanel.setSensorType(GraphPanel.HUMIDITY_SENSOR);
+ 		}
+         });
+        
+        rainfallButton.addActionListener(new ActionListener() {
+ 		@Override
+ 		public void actionPerformed(ActionEvent e) {
+ 			graphPanel.setSensorType(GraphPanel.RAINFALL_SENSOR);
+ 		}
+         });
+        
+        windspeedButton.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			graphPanel.setSensorType(GraphPanel.WIND_SENSOR);
+		}
+        });
+	    
         southLayoutPanel.add(tempButton);
         southLayoutPanel.add(pressureButton);
         southLayoutPanel.add(humidityButton);
@@ -239,9 +275,12 @@ public class WeatherGUI extends JFrame {
      * @param windspd the speed of the wind
      * @param winddir the direction of the wind
      */
-	public void setWind(int windspd, int winddir) {
-		windPanel.updateWind(windspd, winddir);
-	}
+     public void setWind(int windspd, int winddir) {
+	windPanel.updateWind(windspd, winddir);
+	if (graphPanel != null) {
+    		graphPanel.updateSensorValue(GraphPanel.WIND_SENSOR, windspd);
+    	}
+     }
 
     /**
      * Method creates the 8 moon phase icons and all the moon phase names.
@@ -270,7 +309,10 @@ public class WeatherGUI extends JFrame {
         moonLabel.setIcon(moonImages[moon]);
     }
     
-    // set the current rainfall rate
+    /**
+     * Set the current rainfall rate
+     * @param rain rainfall to set
+     */
     public void setRain(int rain) {
     	String raw = Integer.toString(rain);
     	rainReadout.setText("Rain: " + raw.substring(0, raw.length()-1) + "." + raw.substring(raw.length()-1) + " in./hr.");
@@ -279,15 +321,21 @@ public class WeatherGUI extends JFrame {
     	}
     }
     
-    // set the current date
+    /**
+     * Set the current date
+     * @param date The current date
+     */
     public void setDate(Date date) {
     	String raw = date.toString();
     	dateReadout.setText("Date: " + raw.substring(0, 3) + ", " + raw.substring(4, 7) + " "
     		+ raw.substring(8, 10) + ", " + raw.substring(raw.length()-4));
     	
     }
-    
-    // set the current time
+	
+    /**
+     * Set the current time
+     * @param time The current time of day
+     */
     public void setTime(Date time) {
     	String raw = time.toString();
     	int timePeriod = Integer.valueOf(raw.substring(11, 13));
@@ -324,6 +372,7 @@ public class WeatherGUI extends JFrame {
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
         		+ Integer.toString(sunset%100) + " p.m.");
+	graphPanel.updateDisplay();    
     }
     
     /**
