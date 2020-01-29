@@ -374,6 +374,38 @@ public class WeatherGUI extends JFrame {
         		+ Integer.toString(sunset%100) + " p.m.");
 	graphPanel.updateDisplay();    
     }
+	
+    /**
+     * Return the current date
+     * @return current date
+     */
+    public String getDate() {
+    	return dateReadout.getText();
+    }
+	
+    /**
+     * Return the current time
+     * @return current time
+     */
+    public String getTime() {
+    	return timeReadout.getText();
+    }
+	
+    /**
+     * Return the estimated time of sunrise
+     * @return sunrise time
+     */
+    public String getSunrise() {
+    	return sunriseReadout.getText();
+    }
+	
+    /**
+     * Return the estimate time of sunset
+     * @return sunset time
+     */
+    public String getSunset() {
+    	return sunsetReadout.getText();
+    }
     
     /**
      * The action for each of the graph buttons that will change what the graph graphs.
