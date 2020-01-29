@@ -14,12 +14,18 @@ import weather.WeatherController;
 import weather.WeatherGUI;
 import weather.WeatherStation;
 
+/**
+ * Runs tests on the date panel
+ */
 public class DateTest {
 	
 	WeatherGUI gui;
 	WeatherStation station;
 	WeatherController controller;
 	
+        /**
+	 * Set up the program for test
+	 */
 	@Before
 	public void setUp() {
 		gui = new WeatherGUI();
@@ -40,6 +46,9 @@ public class DateTest {
 		}
 	}
 	
+	/**
+	 * Test to get the day of the week
+	 */
 	@Test
 	public void testDayOfWeek() {
 		String date = gui.getDate();
@@ -54,6 +63,9 @@ public class DateTest {
 		}
 	}
 	
+	/**
+	 * Test to get the month of the year
+	 */
 	@Test
 	public void testMonth() {
 		String date = gui.getDate();
@@ -68,6 +80,9 @@ public class DateTest {
 		}
 	}
 	
+	/**
+	 * Test to get the day of the month
+	 */
 	@Test
 	public void testMonthDay() {
 		String date = gui.getDate();
@@ -82,6 +97,9 @@ public class DateTest {
 		}
 	}
 	
+	/**
+	 * Test to get the year number
+	 */
 	@Test
 	public void testYear() {
 		String date = gui.getDate();
