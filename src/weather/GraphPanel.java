@@ -51,7 +51,7 @@ public class GraphPanel extends JPanel {
 	/**
 	 * Wind Speed ID
 	 */
-	public static final int WIND_SENSOR = 4
+	public static final int WIND_SENSOR = 4;
 	/**
 	 * Number of sensors able to be graphed
 	 */
@@ -116,7 +116,7 @@ public class GraphPanel extends JPanel {
 	/**
 	 * The index of the first element of the prevVals circular buffer
 	 */
-	private int index;	
+	private int index;
 	/**
 	 * The type of the sensor currently being graphed
 	 */
@@ -137,11 +137,6 @@ public class GraphPanel extends JPanel {
 		lines = new ArrayList<>(Arrays.asList(
 				new double[]{0, 1-1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1)},
 				new double[]{1.0/(NUM_DIVS+1), 0, 1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1)}));
-		
-//		prevVals = new ArrayList<>();
-//		for (int i=0; i<NUM_DIVS; i++) {
-//			prevVals.add(null);
-//		}
 		
 		tempVals = new ArrayList<>();
 		for (int i=0; i<NUM_DIVS; i++) {
@@ -176,13 +171,7 @@ public class GraphPanel extends JPanel {
 	 * @param type the type of the sensor data
 	 * @param value the value of the sensor reading
 	 */
-	public void updateSensorValue(int type, int value) {
-// 		if (type == sensorType) {
-// 			prevVals.set(index++, value);
-// 			index %= NUM_DIVS;
-// 			repaint();
-// 		}
-		
+	public void updateSensorValue(int type, int value) {		
 		if (type == TEMP_SENSOR) {
 			tempVals.set(index, value);
 		}

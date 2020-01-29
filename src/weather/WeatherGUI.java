@@ -164,51 +164,17 @@ public class WeatherGUI extends JFrame {
 
         // Example Button addition into the South Panel Layout
         // ADD BUTTONS TO SOUTH PANEL.
-        JButton tempButton = new JButton("Graph Temperature");
-        JButton pressureButton = new JButton("Graph Pressure");
-        JButton humidityButton = new JButton("Graph Humidity");
-        JButton rainfallButton = new JButton("Graph Rainfall");
-	JButton windspeedButton = new JButton("Graph Wind Speed");
-		
-        tempButton.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			graphPanel.setSensorType(GraphPanel.TEMP_SENSOR);
-		}
-        });
-        
-        pressureButton.addActionListener(new ActionListener() {
- 		@Override
- 		public void actionPerformed(ActionEvent e) {
- 			graphPanel.setSensorType(GraphPanel.PRESSURE_SENSOR);
- 		}
-         });
-        
-         humidityButton.addActionListener(new ActionListener() {
- 		@Override
- 		public void actionPerformed(ActionEvent e) {
- 			graphPanel.setSensorType(GraphPanel.HUMIDITY_SENSOR);
- 		}
-         });
-        
-        rainfallButton.addActionListener(new ActionListener() {
- 		@Override
- 		public void actionPerformed(ActionEvent e) {
- 			graphPanel.setSensorType(GraphPanel.RAINFALL_SENSOR);
- 		}
-         });
-        
-        windspeedButton.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			graphPanel.setSensorType(GraphPanel.WIND_SENSOR);
-		}
-        });
+        JButton tempButton = new JButton(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Graph Temperature"));
+        JButton pressureButton = new JButton(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Graph Pressure"));
+        JButton humidityButton = new JButton(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Graph Humidity"));
+        JButton rainfallButton = new JButton(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Graph Rainfall"));
+        JButton windspeedButton = new JButton(new GraphButtonAction(GraphPanel.WIND_SENSOR, "Graph Wind Speed"));
 	    
         southLayoutPanel.add(tempButton);
         southLayoutPanel.add(pressureButton);
         southLayoutPanel.add(humidityButton);
         southLayoutPanel.add(rainfallButton);
+        southLayoutPanel.add(windspeedButton);
 
         northLayoutPanel.add(tempPanel);
         northLayoutPanel.add(humidPanel);
