@@ -12,12 +12,18 @@ import weather.WeatherController;
 import weather.WeatherGUI;
 import weather.WeatherStation;
 
+/**
+ * Runs tests for the sunrise prediction sensor
+ */
 public class SunriseTest {
 
 	WeatherGUI gui;
 	WeatherStation station;
 	WeatherController controller;
 	
+	/**
+	 * Set up program to test sunrise
+	 */
 	@Before
 	public void setUp() {
 		gui = new WeatherGUI();
@@ -38,6 +44,9 @@ public class SunriseTest {
 		}
 	}
 	
+	/**
+	 * Test for the hour of sunrise
+	 */
 	@Test
 	public void testHour() {
 		String sunrise = gui.getSunrise();
@@ -50,6 +59,10 @@ public class SunriseTest {
 		}
 		assertTrue("Morning hour isn't within 05:-- to 08:--", morningHour);
 	}
+	
+	/**
+	 * Test for the minute of sunrise
+	 */
 	@Test
 	public void testMinute() {
 		String sunrise = gui.getSunrise();
@@ -63,6 +76,9 @@ public class SunriseTest {
 		assertTrue("Morning minute isn't within --:00 to --:59 ", morningMinute);
 	}
 	
+	/**
+	 * Test for the period when sunrise occurs
+	 */
 	@Test
 	public void testMorning() {
 		String sunrise = gui.getSunrise();
