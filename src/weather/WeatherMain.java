@@ -10,7 +10,7 @@ public class WeatherMain {
     }
     
     /**
-     * The entry point for the PowerPaint application.
+     * The entry point for the Weather Console application.
      * 
      * @param theArgs the unused command line arguments
      */

@@ -59,7 +59,7 @@ public class WeatherGUI extends JFrame {
         this.setLayout(new BorderLayout());
 
         // Sets the initial size and position of the application window
-        setSize(950, 500);
+        setSize(1100, 500);
         setLocationRelativeTo(null);
         
         JPanel tempPanel = new JPanel();

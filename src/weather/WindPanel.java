@@ -37,6 +37,14 @@ public class WindPanel extends JPanel {
 		repaint();
 	}
 	
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public int getDir() {
+		return dir;
+	}
+	
 	@Override
 	public void paintComponent(final Graphics theGraphics) {
 		super.paintComponent(theGraphics);
