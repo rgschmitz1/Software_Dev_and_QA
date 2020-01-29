@@ -14,12 +14,18 @@ import weather.WeatherController;
 import weather.WeatherGUI;
 import weather.WeatherStation;
 
+/**
+ * Runs tests on the rainfall sensor
+ */
 public class RainfallTest {
 	
 	WeatherGUI gui;
 	WeatherStation station;
 	WeatherController controller;
 	
+	/**
+	 * Set up the program for tests
+	 */
 	@Before
 	public void setUp() {
 		gui = new WeatherGUI();
@@ -40,6 +46,9 @@ public class RainfallTest {
 		}
 	}
 	
+	/**
+	 * Test for positive reading values on sensor
+	 */
 	@Test
 	public void testPositive() {
 		int rainfall = station.getRain();
@@ -52,6 +61,9 @@ public class RainfallTest {
 		assertTrue("Rainfall is in negative.", positive);
 	}
 	
+	/**
+	 * Test for negative reading values on sensor
+	 */
 	@Test
 	public void testNegative() {
 		int rainfall = station.getRain();
@@ -60,6 +72,9 @@ public class RainfallTest {
 		} 
 	}
 	
+	/**
+	 * Test for reading values within sensor gauge range
+	 */
 	@Test
 	public void testMinimumAndMaximum() {
 		int rainfall = station.getRain();
