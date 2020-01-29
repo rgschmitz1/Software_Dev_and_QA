@@ -49,22 +49,36 @@ public class GraphPanel extends JPanel {
 	 */
 	public static final int RAINFALL_SENSOR = 3;
 	/**
+	 * Wind Speed ID
+	 */
+	public static final int WIND_SENSOR = 4
+	/**
 	 * Number of sensors able to be graphed
 	 */
-	public static final int NUM_SENSORS = 4;
+	public static final int NUM_SENSORS = 5;
 	
 	/**
 	 * The minimum values of the respective sensors
 	 */
-	private static final int[] SENSOR_MINS = {100, 29000, 0, 0};
+	private static final int[] SENSOR_MINS = {100, 29000, 0, 0, 0};
 	/**
 	 * The maximum values of the respective sensors
 	 */
-	private static final int[] SENSOR_MAXES = {1000, 31000, 100, 100};
+	private static final int[] SENSOR_MAXES = {1000, 31000, 100, 100, 60};
+	/**
+	 * The minimum values to be displayed on the graph
+	 */
+	private static final double[] READING_MINS = {10.0, 29.000, 0, 0.0, 0};
+	/**
+	 * The maximum values to be displayed on the graph
+	 */
+	private static final double[] READING_MAXES = {100.0, 31.000, 100, 10.0, 60};
+	
 	/**
 	 * The names of the respective sensors
 	 */
-	private static final String[] SENSOR_NAMES = {"Temp", "Pressure", "Humidity", "Rainfall"};
+	private static final String[] SENSOR_NAMES = {"Temp (°F)", "Pressure (in.)", "Humidity (%)", 
+							"Rainfall (in./hr.)", "Wind Speed (mph)"};
 	
 	/**
 	 * The Stroke with which the graph can be drawn
@@ -78,6 +92,27 @@ public class GraphPanel extends JPanel {
 	 * A circular buffer of the previous sensor values
 	 */
 	private List<Integer> prevVals;
+	/**
+	 * A circular buffer of the previous temperature values
+	 */
+	private List<Integer> tempVals;
+	/**
+	 * A circular buffer of the previous humidity values
+	 */
+	private List<Integer> humidVals;
+	/**
+	 * A circular buffer of the previous rainfall values
+	 */
+	private List<Integer> rainVals;
+	/**
+	 * A circular buffer of the previous wind speed values
+	 */
+	private List<Integer> windVals;
+	/**
+	 * A circular buffer of the previous pressure values
+	 */
+	private List<Integer> baroVals;
+	
 	/**
 	 * The index of the first element of the prevVals circular buffer
 	 */
@@ -103,27 +138,75 @@ public class GraphPanel extends JPanel {
 				new double[]{0, 1-1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1)},
 				new double[]{1.0/(NUM_DIVS+1), 0, 1.0/(NUM_DIVS+1), 1-1.0/(NUM_DIVS+1)}));
 		
-		prevVals = new ArrayList<>();
+//		prevVals = new ArrayList<>();
+//		for (int i=0; i<NUM_DIVS; i++) {
+//			prevVals.add(null);
+//		}
+		
+		tempVals = new ArrayList<>();
 		for (int i=0; i<NUM_DIVS; i++) {
-			prevVals.add(null);
+			tempVals.add(null);
 		}
+		humidVals = new ArrayList<>();
+		for (int i=0; i<NUM_DIVS; i++) {
+			humidVals.add(null);
+		}
+		rainVals = new ArrayList<>();
+		for (int i=0; i<NUM_DIVS; i++) {
+			rainVals.add(null);
+		}
+		windVals = new ArrayList<>();
+		for (int i=0; i<NUM_DIVS; i++) {
+			windVals.add(null);
+		}
+		baroVals = new ArrayList<>();
+		for (int i=0; i<NUM_DIVS; i++) {
+			baroVals.add(null);
+		}
+		prevVals = tempVals;
+		
 		sensorType = TEMP_SENSOR;
 		
 		index = 0;
 	}
 	
 	/**
-	 * Updates the sensor value of the type matches the currently graphed type
+	 * Updates the sensor value of a selected type.
 	 * 
 	 * @param type the type of the sensor data
 	 * @param value the value of the sensor reading
 	 */
 	public void updateSensorValue(int type, int value) {
-		if (type == sensorType) {
-			prevVals.set(index++, value);
-			index %= NUM_DIVS;
-			repaint();
+// 		if (type == sensorType) {
+// 			prevVals.set(index++, value);
+// 			index %= NUM_DIVS;
+// 			repaint();
+// 		}
+		
+		if (type == TEMP_SENSOR) {
+			tempVals.set(index, value);
 		}
+		if (type == PRESSURE_SENSOR) {
+			baroVals.set(index, value);
+		}
+		if (type == HUMIDITY_SENSOR) {
+			humidVals.set(index, value);
+		}
+		if (type == RAINFALL_SENSOR) {
+			rainVals.set(index, value);
+		}
+		if (type == WIND_SENSOR) {
+			windVals.set(index, value);
+		}
+	}
+	
+	/**
+	 * Update graph of display panel with value from the latest LOOP packet.
+	 */
+	public void updateDisplay() {
+		index++;
+		index %= NUM_DIVS;
+		repaint();
 	}
 	
 	/**
@@ -171,7 +254,20 @@ public class GraphPanel extends JPanel {
 		
 		// draw the bars of the graph
 		int min = SENSOR_MINS[sensorType];
-		int max = SENSOR_MAXES[sensorType];
+		int max = SENSOR_MAXES[sensorType];		
+		double readMin = READING_MINS[sensorType];
+		double readMax = READING_MAXES[sensorType];
+				
+		g2d.drawString(Double.toString(readMin), (float) divW - 40, (float) getHeight() - 35);
+		g2d.drawString(Double.toString(readMin + (readMax - readMin)/4), (float) divW - 40, (float) (divH-1)*8);
+		g2d.drawString("__", (float) divW-5, (float) ((divH-1)*8) - 10);
+		g2d.drawString(Double.toString(readMin + (readMax - readMin)/2), (float) divW - 40, (float) (getHeight()-10)/2);
+		g2d.drawString("__", (float) divW-5, (float) ((getHeight()-10)/2) - 10);
+		g2d.drawString(Double.toString(readMax - (readMax - readMin)/4), (float) divW - 40, (float) (divH*3)-5);
+		g2d.drawString("__", (float) divW-5, (float) (divH*3) - 15);
+		g2d.drawString(Double.toString(readMax), (float) divW - 40, (float) (divH/3) - 2);
+		g2d.drawString("__", (float) divW-5, (float) (divH/3) - 12);		
+		
 		for (int i=0; i<NUM_DIVS; i++) {
 			Integer val = prevVals.get((index+i)%NUM_DIVS);
 			if (val != null) {
@@ -195,10 +291,33 @@ public class GraphPanel extends JPanel {
 	public void setSensorType(int type) {
 		if (type != sensorType) {
 			sensorType = type;
-			for (int i=0; i<prevVals.size(); i++) {
-				prevVals.set(i, null);
+			repaintGraph(sensorType);
+// 			for (int i=0; i<prevVals.size(); i++) {
+// 				prevVals.set(i, null);
+// 			}
+		}
+	}
+	
+	/**
+	 * Redraw the graph display with the selected type of sensor data.
+	 * 
+	 * @param type The sensor type
+	 */
+	public void repaintGraph(int type) {
+		if (type == TEMP_SENSOR) {
+			prevVals = tempVals;	
+		} else if (type == PRESSURE_SENSOR) {
+			prevVals = baroVals;
+		} else if (type == HUMIDITY_SENSOR) {
+			prevVals = humidVals;
+		} else if (type == RAINFALL_SENSOR) {
+			prevVals = rainVals;
+		} else {
+			if (type == WIND_SENSOR) {
+				prevVals = windVals;
 			}
 		}
+		repaint();
 	}
 	
 	/**
