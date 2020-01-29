@@ -12,12 +12,18 @@ import weather.WeatherController;
 import weather.WeatherGUI;
 import weather.WeatherStation;
 
+/**
+ * Runs tests for the sunset prediction sensor
+ */
 public class SunsetTest {
 
 	WeatherGUI gui;
 	WeatherStation station;
 	WeatherController controller;
 	
+	/**
+	 * Set up program for sunset tests
+	 */
 	@Before
 	public void setUp() {
 		gui = new WeatherGUI();
@@ -38,6 +44,9 @@ public class SunsetTest {
 		}
 	}
 	
+	/**
+	 * Test the hour of the sunset
+	 */
 	@Test
 	public void testHour() {
 		String sunset = gui.getSunset();
@@ -50,6 +59,10 @@ public class SunsetTest {
 		}
 		assertTrue("P.M. hour isn't within 05:-- to 08:--", pmHour);
 	}
+	
+	/**
+	 * Test the minute of the sunset
+	 */
 	@Test
 	public void testMinute() {
 		String sunset = gui.getSunset();
@@ -63,6 +76,9 @@ public class SunsetTest {
 		assertTrue("P.M. minute isn't within --:00 to --:59 ", pmMinute);
 	}
 	
+	/**
+	 * Test the period of when sunset occurs
+	 */
 	@Test
 	public void testMorning() {
 		String sunset = gui.getSunset();
