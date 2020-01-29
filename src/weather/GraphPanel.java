@@ -27,6 +27,7 @@ public class GraphPanel extends JPanel {
 	public static final int PRESSURE_SENSOR = 1;
 	public static final int HUMIDITY_SENSOR = 2;
 	public static final int RAINFALL_SENSOR = 3;
+	public static final int NUM_SENSORS = 4;
 	
 	private static final int[] SENSOR_MINS = {100, 29000, 0, 0};
 	private static final int[] SENSOR_MAXES = {1000, 31000, 100, 100};
@@ -62,6 +63,10 @@ public class GraphPanel extends JPanel {
 			index %= NUM_DIVS;
 			repaint();
 		}
+	}
+	
+	public int getCurrentSensorValue() {
+		return prevVals.get((index+prevVals.size()-1)%prevVals.size());
 	}
 	
 	@Override
