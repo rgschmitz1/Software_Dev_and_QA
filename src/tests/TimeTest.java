@@ -1,14 +1,14 @@
 package tests;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.awt.EventQueue;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import weather.WeatherController;
 import weather.WeatherGUI;
@@ -20,7 +20,7 @@ public class TimeTest {
 	WeatherStation station;
 	WeatherController controller;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		gui = new WeatherGUI();
         EventQueue.invokeLater(new Runnable() {

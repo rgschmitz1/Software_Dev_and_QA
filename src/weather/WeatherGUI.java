@@ -337,8 +337,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
-        		+ Integer.toString(sunset%100) + " p.m.");
-	graphPanel.updateDisplay();    
+        		+ Integer.toString(sunset%100) + " p.m."); 
     }
 	
     /**
@@ -372,6 +371,12 @@ public class WeatherGUI extends JFrame {
     public String getSunset() {
     	return sunsetReadout.getText();
     }
+    
+    public void graphTick() {
+    	if (graphPanel != null) {
+    		graphPanel.updateDisplay();
+    	}
+	}
     
     /**
      * The action for each of the graph buttons that will change what the graph graphs.

@@ -1,12 +1,12 @@
 package tests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import weather.WeatherController;
 import weather.WeatherGUI;
@@ -18,7 +18,7 @@ public class SunsetTest {
 	WeatherStation station;
 	WeatherController controller;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		gui = new WeatherGUI();
         EventQueue.invokeLater(new Runnable() {
@@ -48,7 +48,7 @@ public class SunsetTest {
 		} else {
 			pmHour = false;
 		}
-		assertTrue("P.M. hour isn't within 05:-- to 08:--", pmHour);
+		assertTrue(pmHour, "P.M. hour isn't within 05:-- to 08:--");
 	}
 	@Test
 	public void testMinute() {
@@ -60,7 +60,7 @@ public class SunsetTest {
 		} else {
 			pmMinute = false;
 		}
-		assertTrue("P.M. minute isn't within --:00 to --:59 ", pmMinute);
+		assertTrue(pmMinute, "P.M. minute isn't within --:00 to --:59 ");
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class SunsetTest {
 		} else {
 			morning = false;
 		}
-		assertTrue("Doesn't read as \"p.m.\", either because it is misspelled or it is a.m.", morning);
+		assertTrue(morning, "Doesn't read as \"p.m.\", either because it is misspelled or it is a.m.");
 	}
 	
 }

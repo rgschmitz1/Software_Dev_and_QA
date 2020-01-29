@@ -1,14 +1,13 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.awt.EventQueue;
 import java.util.concurrent.TimeUnit;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import weather.WeatherController;
 import weather.WeatherGUI;
@@ -20,7 +19,7 @@ public class RainfallTest {
 	WeatherStation station;
 	WeatherController controller;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		gui = new WeatherGUI();
         EventQueue.invokeLater(new Runnable() {
@@ -49,7 +48,7 @@ public class RainfallTest {
 		} else {
 			positive = false;
 		}
-		assertTrue("Rainfall is in negative.", positive);
+		assertTrue(positive, "Rainfall is in negative.");
 	}
 	
 	@Test
@@ -69,7 +68,6 @@ public class RainfallTest {
 		} else {
 			range = false;
 		}
-		assertTrue("Rainfall is in range.", range);
+		assertTrue(range, "Rainfall is in range.");
 	}
-
 }

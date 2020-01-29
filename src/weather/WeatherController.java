@@ -52,6 +52,7 @@ public class WeatherController implements Runnable {
 			gui.setTime(date);
 			gui.setSunrise(sunrise);
 			gui.setSunset(sunset);
+			gui.graphTick();
 		}
 	}
 	

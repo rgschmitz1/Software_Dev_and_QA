@@ -204,7 +204,7 @@ public class GraphPanel extends JPanel {
 	 * @return the most recent sensor value
 	 */
 	public int getCurrentSensorValue() {
-		return prevVals.get((index+prevVals.size()-1)%prevVals.size());
+		return prevVals.get(index);
 	}
 	
 	/**
