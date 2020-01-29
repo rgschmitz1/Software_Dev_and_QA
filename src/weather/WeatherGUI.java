@@ -19,8 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class WeatherGUI extends JFrame {
-    /**
-	 * 
+	/**
+	 * The unique ID for the Serializable interface
 	 */
 	private static final long serialVersionUID = 562997229458227901L;
 	
@@ -34,18 +34,57 @@ public class WeatherGUI extends JFrame {
      */
     private static final int NUM_IMAGES = 8;
 
+    /**
+     * Shows the temperature
+     */
     private JLabel tempReadout;
+    /**
+     * Shows the humidity
+     */
     private JLabel humidReadout;
+    /**
+     * Shows the pressure
+     */
     private JLabel pressureReadout;
+    /**
+     * Shows the graph
+     */
     private GraphPanel graphPanel;
+    /**
+     * Shows the wind data
+     */
     private WindPanel windPanel;
+    /**
+     * Shows the moon phase
+     */
     private JLabel moonReadout;
+    /**
+     * Shows the moon phase text
+     */
     private JLabel moonLabel;
-    private ImageIcon[] images = new ImageIcon[NUM_IMAGES];
+    /**
+     * holds the images for each moon phase
+     */
+    private ImageIcon[] moonImages = new ImageIcon[NUM_IMAGES];
+    /**
+     * Shows the rainfall
+     */
     private JLabel rainReadout;
+    /**
+     * Shows the date
+     */
     private JLabel dateReadout;
+    /**
+     * Shows the time
+     */
     private JLabel timeReadout;
+    /**
+     * Shows the time of sunrise
+     */
     private JLabel sunriseReadout;
+    /**
+     * Shows the time of sunset
+     */
     private JLabel sunsetReadout;
 
 
@@ -156,6 +195,11 @@ public class WeatherGUI extends JFrame {
         setVisible(true);
     }
     
+    /**
+     * Sets the temperature
+     * 
+     * @param temp the temperature to set
+     */
     public void setTemp(int temp) {
     	String raw = Integer.toString(temp);
     	tempReadout.setText("Temp: " + raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
@@ -164,6 +208,11 @@ public class WeatherGUI extends JFrame {
     	}
     }
     
+    /**
+     * Sets the humidity
+     * 
+     * @param humid the humidity to set
+     */
     public void setHumid(int humid) {
     	humidReadout.setText("Humid: " + Integer.toString(humid)+" %");
     	if (graphPanel != null) {
@@ -171,6 +220,11 @@ public class WeatherGUI extends JFrame {
     	}
     }
     
+    /**
+     * Sets the pressure
+     * 
+     * @param pressure to set
+     */
     public void setPressure(int pressure) {
     	String raw = Integer.toString(pressure);
     	pressureReadout.setText("Pressure:" + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
@@ -179,6 +233,12 @@ public class WeatherGUI extends JFrame {
     	}
     }
 
+    /**
+     * Sets the wind velocity
+     * 
+     * @param windspd the speed of the wind
+     * @param winddir the direction of the wind
+     */
 	public void setWind(int windspd, int winddir) {
 		windPanel.updateWind(windspd, winddir);
 	}
@@ -203,11 +263,11 @@ public class WeatherGUI extends JFrame {
             Image image =icon.getImage();
             Image newImg = image.getScaledInstance(50,50, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(newImg);
-            images[i] = resizedIcon;
+            moonImages[i] = resizedIcon;
         }
 
         moonReadout.setText(phases[moon]);
-        moonLabel.setIcon(images[moon]);
+        moonLabel.setIcon(moonImages[moon]);
     }
     
     // set the current rainfall rate
@@ -246,30 +306,57 @@ public class WeatherGUI extends JFrame {
     	}	
     }
     
-    // set the sunrise time
+    /**
+     * Sets the time of sunrise
+     * 
+     * @param sunrise the time of sunrise to set
+     */
     public void setSunrise(int sunrise) {
     	sunriseReadout.setText("Sunrise: 0" + Integer.toString(sunrise/100) + ":" 
     		+ Integer.toString(sunrise%100) + " a.m.");
     }
     
-    // set the sunset time
+    /**
+     * Sets the time of sunset
+     * 
+     * @param sunset the time of sunset to set
+     */
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
         		+ Integer.toString(sunset%100) + " p.m.");
     }
     
+    /**
+     * The action for each of the graph buttons that will change what the graph graphs.
+     * 
+     * @author Group 6
+     */
     private class GraphButtonAction extends AbstractAction {
     	/**
-		 * 
+		 * The ID for the Serializable interface
 		 */
 		private static final long serialVersionUID = 3612147189752191515L;
+		/**
+		 * The sensor type to have the graph start showing
+		 */
 		private int type;
     	
+		/**
+		 * The constructor for the Action
+		 * 
+		 * @param type the sensor type that the button will cause the graph to start showing
+		 * @param buttonName the name of the button
+		 */
     	public GraphButtonAction(int type, String buttonName) {
     		super(buttonName);
     		this.type = type;
     	}
     	
+    	/**
+    	 * Performs the actual setting of the graph sensor type
+    	 * 
+    	 * @param e the action event for the button pressed, will be not be used
+    	 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			graphPanel.setSensorType(type);

@@ -15,6 +15,12 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+/**
+ * The JPanel on which graph data can be displayed.
+ * 
+ * @author Group 6
+ *
+ */
 public class GraphPanel extends JPanel {
 	/**
 	 * The unique ID for the Serializable interface
