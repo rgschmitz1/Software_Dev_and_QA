@@ -307,15 +307,15 @@ public class WeatherGUI extends JFrame {
     	int timePeriod = Integer.valueOf(raw.substring(11, 13));
     	if (timePeriod < 12) {
     		if (timePeriod == 0) {
-    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " a.m.");
+    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " AM");
     		} else {
-    			timeReadout.setText("Time: " + raw.substring(11, 19) + " a.m.");
+    			timeReadout.setText("Time: " + raw.substring(11, 19) + " AM");
     		}
     	} else {
     		if (timePeriod == 12) {
-    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " p.m.");
+    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " PM");
     		} else {
-    			timeReadout.setText("Time: " + Integer.toString((timePeriod-12)) + raw.substring(13, 19) + " p.m.");
+    			timeReadout.setText("Time: " + Integer.toString((timePeriod-12)) + raw.substring(13, 19) + " PM");
     		}
     	}	
     }
@@ -327,7 +327,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setSunrise(int sunrise) {
     	sunriseReadout.setText("Sunrise: 0" + Integer.toString(sunrise/100) + ":" 
-    		+ String.format("%02d", sunrise%100) + " a.m.");
+    		+ String.format("%02d", sunrise%100) + " AM");
     }
     
     /**
@@ -337,7 +337,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
-        		+ String.format("%02d", sunset%100) + " p.m."); 
+        		+ String.format("%02d", sunset%100) + " PM"); 
     }
 	
     /**
