@@ -327,7 +327,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setSunrise(int sunrise) {
     	sunriseReadout.setText("Sunrise: 0" + Integer.toString(sunrise/100) + ":" 
-    		+ Integer.toString(sunrise%100) + " a.m.");
+    		+ String.format("%02d", sunrise%100) + " a.m.");
     }
     
     /**
@@ -337,7 +337,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setSunset(int sunset) {
     	sunsetReadout.setText("Sunset: 0" + Integer.toString(sunset/100) + ":" 
-        		+ Integer.toString(sunset%100) + " p.m."); 
+        		+ String.format("%02d", sunset%100) + " p.m."); 
     }
 	
     /**
