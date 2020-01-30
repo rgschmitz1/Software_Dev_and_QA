@@ -82,9 +82,9 @@ public class SunsetTest {
 	@Test
 	public void testMorning() {
 		String sunset = gui.getSunset();
-		String period =  sunset.substring(sunset.length()-4, sunset.length());
+		String period =  sunset.substring(sunset.length()-2, sunset.length());
 		boolean morning;
-		if (period.equals("p.m.")) {
+		if (period.equals("PM")) {
 			morning = true;
 		} else {
 			morning = false;
