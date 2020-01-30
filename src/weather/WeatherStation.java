@@ -106,24 +106,75 @@ public class WeatherStation{
 	 * The offset for the packet. Tells us which byte the pressure is stored at.
 	 */
 	private static final int PRESSURE_OFFSET = 7;
-	
+
+	/**
+	 * Minimum WindSpeed value.
+	 */
 	private static final int MIN_WINDSPD = 0;
+
+	/**
+	 * Maximum WindSpeed value.
+	 */
 	private static final int MAX_WINDSPD = 60;
+
+	/**
+	 * Deviation of WindSpeed value.
+	 */
 	private static final double WINDSPD_DEV = 10.0;
+
+	/**
+	 * The offset for the packet. Tells us which byte the WindSpeed value is stored at.
+	 */
 	private static final int WINDSPD_OFFSET = 14;
-	
+
+	/**
+	 * The Wind Direction direction allowing 360 degrees.
+	 */
 	private static final int WINDDIR_MOD = 360;
+
+	/**
+	 * Deviation of Wind Direction.
+	 */
 	private static final double WINDDIR_DEV = 10.0;
+
+	/**
+	 * The byte offset for the packet data.
+	 */
 	private static final int WINDDIR_OFFSET = 16;
-	
+
+	/**
+	 * Minimum Rain fall value.
+	 */
 	private static final int MIN_RAIN = 0;
+
+	/**
+	 * Maximum rain fall value.
+	 */
 	private static final int MAX_RAIN = 100;
+
+	/**
+	 * Deviation of rain fall.
+	 */
 	private static final double RAIN_DEV = 4;
+
+	/**
+	 * The offset for the packet. Tells us which byte the WindSpeed value is stored at.
+	 */
 	private static final int RAIN_OFFSET = 44;
-	
+
+	/**
+	 * Offset values of sunrise for the packet. To know which byte the data is stored at.
+	 */
 	private static final int SUNRISE_OFFSET = 91;
+
+	/**
+	 * Offset values of sunrise for the packet. To know which byte the data is stored at.
+	 */
 	private static final int SUNSET_OFFSET = 93;
-	
+
+	/**
+	 * Constructor that generate all the data values for each value.
+	 */
 	public WeatherStation() {
 		random = new Random();
 		temp = MIN_TEMP + random.nextInt(MAX_TEMP - MIN_TEMP);
@@ -135,7 +186,11 @@ public class WeatherStation{
 		sunrise = (100*(5 + random.nextInt(3))) + random.nextInt(60);
 		sunset = (100*(5 + random.nextInt(3))) + random.nextInt(60);
 	}
-	
+
+	/**
+	 * Updates the Sensors and generates a packet with the data.
+	 * @return a byte packet with size 99.
+	 */
 	public byte[] getNext() {
 		try {
 			Thread.sleep(2000);
@@ -160,7 +215,10 @@ public class WeatherStation{
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Updates all the data values with a new ones.
+	 */
 	private void updateSensors() {
 		temp = getTemp() + (int)(random.nextGaussian() * TEMP_DEV + 0.5);
 		humid = getHumid() + (int)(random.nextGaussian() * HUMID_DEV + 0.5);
@@ -177,30 +235,58 @@ public class WeatherStation{
 		rain = Math.max(Math.min(getRain(), MAX_RAIN), MIN_RAIN);
 	}
 
+	/**
+	 * Get Humidity value.
+	 * @return the integer value for humidity.
+	 */
 	public int getHumid() {
 		return humid;
 	}
 
+	/**
+	 * Get Temperature value.
+	 * @return the integer value for temperature.
+	 */
 	public int getTemp() {
 		return temp;
 	}
 
+	/**
+	 * Get Parametric Pressure.
+	 * @return Integer value for Pressure.
+	 */
 	public int getPressure() {
 		return pressure;
 	}
 
+	/**
+	 * Get WindSpeed.
+	 * @return Integer value for Wind Speed.
+	 */
 	public int getWindspd() {
 		return windspd;
 	}
 
+	/**
+	 * Get Rain fall value in inches.
+	 * @return Integer value for Rainfall.
+	 */
 	public int getRain() {
 		return rain;
 	}
 
+	/**
+	 * Get time of Sunrise (am)
+	 * @return Integer value for Sunrise.
+	 */
 	public int getSunrise() {
 		return sunrise;
 	}
 
+	/**
+	 * Get time of Sunset (pm)
+	 * @return Integer value for Sunset.
+	 */
 	public int getSunset() {
 		return sunset;
 	}
