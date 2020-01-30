@@ -125,7 +125,6 @@ public class WeatherGUI extends JFrame {
         windPanel = new WindPanel(getHeight()/9);
 
         JPanel moonPanel = new JPanel();
-//        moonPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         moonReadout = new JLabel();
         moonReadout.setPreferredSize(new Dimension(110, 50));
         moonLabel = new JLabel();

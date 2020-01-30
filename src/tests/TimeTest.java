@@ -25,7 +25,9 @@ public class TimeTest {
 	WeatherStation station;
 	WeatherController controller;
 
-	
+	/**
+	 * Set up for the Time testing.
+	 */
 	@BeforeEach
 	public void setUp() {
 		gui = new WeatherGUI();
@@ -45,7 +47,10 @@ public class TimeTest {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * Test to check the time values are valid.
+	 */
 	@Test
 	public void testTime() {
 		String time = gui.getTime().substring(6);
