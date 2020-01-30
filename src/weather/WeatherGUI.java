@@ -18,6 +18,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * The main GUI for the weather console.
+ * 
+ * @author Group 6
+ */
 public class WeatherGUI extends JFrame {
 	/**
 	 * The unique ID for the Serializable interface
