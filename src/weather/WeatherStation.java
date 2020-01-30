@@ -2,31 +2,109 @@ package weather;
 import java.nio.ByteBuffer;
 import java.util.Random;
 
+/**
+ * A "proxy" class that simulates a physical weather station and generates packets of data.
+ *
+ * @author Group 6 Ilya B. Neil H. Jason L. Brandon K.
+ * @version January 26, 2020
+ */
 public class WeatherStation{
+	/**
+	 * Stores the temperature value.
+	 */
 	private int temp;
+	/**
+	 * Stores the humidity value.
+	 */
 	private int humid;
+	/**
+	 * Stores the air pressure value.
+	 */
 	private int pressure;
+	/**
+	 * The WindSpeed value.
+	 */
 	private int windspd;
+	/**
+	 * The Wind Direction value.
+	 */
 	private int winddir;
+	/**
+	 * The total amount of rainfall (in) value.
+	 */
 	private int rain;
+	/**
+	 * The int value of sunrise(time).
+	 */
 	private int sunrise;
+	/**
+	 * The int value of sunset(time).
+	 */
 	private int sunset;
-	
+
+	/**
+	 * A random generator for generating the different values.
+	 */
 	private Random random;
-	
+
+	/**
+	 * The minimum temperature value.
+	 */
 	private static final int MIN_TEMP = 100;
+
+	/**
+	 * The maximum temperature value.
+	 */
 	private static final int MAX_TEMP = 1000;
+
+	/**
+	 * The amount the temperature should deviate up/down.
+	 */
 	private static final double TEMP_DEV = 50.0;
+
+	/**
+	 * The offset for the packet. Tells us which byte the temperature is stored at.
+	 */
 	private static final int TEMP_OFFSET = 12;
-	
+
+	/**
+	 * Minimum humidity value.
+	 */
 	private static final int MIN_HUMID = 0;
+
+	/**
+	 * Maximum humidity value.
+	 */
 	private static final int MAX_HUMID = 100;
+
+	/**
+	 * Deviation of the humidity value (up/down).
+	 */
 	private static final double HUMID_DEV = 20.0;
+
+	/**
+	 * The offset for the packet. Tells us which byte the humidity is stored at.
+	 */
 	private static final int HUMID_OFFSET = 33;
-	
+
+	/**
+	 * Minimum air (parametric) pressure value.
+	 */
 	private static final int MIN_PRESSURE = 29000;
+
+	/**
+	 * Maximum air (parametric) pressure value.
+	 */
 	private static final int MAX_PRESSURE = 31000;
+
+	/**
+	 * Deviation of the pressure value (Changes in up/down).
+	 */
 	private static final double PRESSURE_DEV = 200.0;
+
+	/**
+	 * The offset for the packet. Tells us which byte the pressure is stored at.
+	 */
 	private static final int PRESSURE_OFFSET = 7;
 	
 	private static final int MIN_WINDSPD = 0;

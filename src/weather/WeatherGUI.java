@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class WeatherGUI extends JFrame {
 	/**
 	 * The unique ID for the Serializable interface

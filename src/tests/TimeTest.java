@@ -15,10 +15,16 @@ import weather.WeatherController;
 import weather.WeatherGUI;
 import weather.WeatherStation;
 
+/***
+ * Test class for Time.
+ * @author  Group 6
+ * @version January 28, 2020
+ */
 public class TimeTest {
 	WeatherGUI gui;
 	WeatherStation station;
 	WeatherController controller;
+
 	
 	@BeforeEach
 	public void setUp() {
