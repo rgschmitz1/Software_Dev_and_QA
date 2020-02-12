@@ -1,6 +1,8 @@
 package demo;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
@@ -17,14 +19,17 @@ public class JsonTest {
 		theUrl.append("&APPID=");
 		theUrl.append(APIKEY);
 		
+		URL url;
 		try {
-			URL url = new URL(theUrl.toString());
-			JSONObject jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
+			url = new URL(theUrl.toString());
+			JSONObject jo;
+			jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
 			// Get Current Temp
 			Map<String, Double> mainfield = (Map<String, Double>) jo.get("main");
 			System.out.println(mainfield.get("temp"));
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}   
+		} catch (IOException | ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

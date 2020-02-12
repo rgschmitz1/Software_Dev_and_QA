@@ -103,7 +103,7 @@ public class WeatherGUI extends JFrame {
         this.setLayout(new BorderLayout());
 
         // Sets the initial size and position of the application window
-        setSize(1100, 500);
+        setSize(1200, 500);
         setLocationRelativeTo(null);
         
         JPanel tempPanel = new JPanel();
@@ -118,7 +118,7 @@ public class WeatherGUI extends JFrame {
         
         JPanel pressurePanel = new JPanel();
         pressurePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        pressureReadout = new JLabel("Pressure: -- in");
+        pressureReadout = new JLabel("Pressure: -- inhg");
         pressurePanel.add(pressureReadout);
 
         graphPanel = new GraphPanel(getWidth()/2, getHeight()/2);
@@ -233,7 +233,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setPressure(int pressure) {
     	String raw = Integer.toString(pressure);
-    	pressureReadout.setText("Pressure:" + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" in.");
+    	pressureReadout.setText("Pressure:" + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" inhg");
     	if (graphPanel != null) {
     		graphPanel.updateSensorValue(GraphPanel.PRESSURE_SENSOR, pressure);
     	}

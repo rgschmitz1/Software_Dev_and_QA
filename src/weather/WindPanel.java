@@ -114,7 +114,7 @@ public class WindPanel extends JPanel {
 		g2d.translate(getWidth()/2.0, getHeight()/2.0);
 		g2d.rotate(dir * Math.PI/180);
 		g2d.fillPolygon(new int[] {-getWidth()/10, 0, getWidth()/10},
-						new int[] {(int) (getHeight()*(-0.85)/2) , (int) (-getHeight()/2.0), (int) (getHeight()*(-0.85)/2)}, 3);
+						new int[] {(int) (getHeight()*(-1)/2) , (int) (getHeight()*(-0.85)/2.0), (int) (getHeight()*(-1)/2)}, 3);
 		g2d.rotate(dir * -Math.PI/180);
 		g2d.translate(-getWidth()/2.0, -getHeight()/2.0);
 		
