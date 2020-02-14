@@ -160,8 +160,11 @@ public class WeatherStation{
 			double msWindSpeed = (double)((Map)jo.get("wind")).get("speed");
 			windspd = (int)(msWindSpeed * MS_MPH_COEF + 0.5);
 			winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
-			double mmRain = (double)(((Map)jo.get("rain")).get("1h"));
-			rain = (int)(mmRain * MM_IN_COEF + 0.5);
+			Object rainObj = jo.get("rain");
+			if (rainObj != null) {
+				double mmRain = (double)((Map)rainObj).get("1h");
+				rain = (int)(mmRain * MM_IN_COEF + 0.5);
+			}
 			sunrise = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunrise")));
 			sunset = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunset")));
 		} catch (IOException | ParseException e) {
