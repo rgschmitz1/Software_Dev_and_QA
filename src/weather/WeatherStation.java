@@ -275,6 +275,8 @@ public class WeatherStation{
 				if (rainObj != null) {
 					double mmRain = (double)((Map)rainObj).get("1h");
 					rain = (int)(mmRain * MM_IN_COEF + 0.5);
+				} else {
+					rain = 0;
 				}
 				sunrise = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunrise")));
 				sunset = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunset")));
