@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
@@ -59,6 +60,41 @@ public class WeatherController implements Runnable {
 	 */
 	private static final int SUNSET_OFFSET = 93;
 
+	/**
+	 * Rainy weather state
+	 */
+	public static final int RAINY = 0;
+	
+	/**
+	 * Windy weather state
+	 */
+	public static final int WINDY = 1;
+	
+	/**
+	 * Cold weather state
+	 */
+	public static final int COLD = 2;
+	
+	/**
+	 * Dry weather state
+	 */
+	public static final int DRY = 3;
+	
+	/**
+	 * Night weather state
+	 */
+	public static final int NIGHT = 4;
+	
+	/**
+	 * Cloudy weather state
+	 */
+	public static final int CLOUDY = 5;
+	
+	/**
+	 * Sunny weather state
+	 */
+	public static final int SUNNY = 6;
+	
 	/**
 	 * Random that will be used for moon phase.
 	 */
@@ -130,8 +166,36 @@ public class WeatherController implements Runnable {
 			gui.setSunrise(sunrise);
 			gui.setSunset(sunset);
 			gui.graphTick();
+			
+			sendWeatherSummaryState(temp, humid, pressure, windspd, moon, rain, date, sunrise, sunset);
 		}
 		writer.close();
+	}
+
+	private void sendWeatherSummaryState(int temp, int humid, int pressure, int windspd, int moon, int rain,
+			Date date, int sunrise, int sunset) {
+		int state = SUNNY; // default weather state
+		
+		if (rain > 0) {
+			state = RAINY;
+		} else if (windspd > 20) {
+			state = WINDY;
+		} else if (temp < 320) {
+			state = COLD;
+		} else if (humid < 40) {
+			state = DRY;
+		} else {
+			sunset = (12 + (sunset / 100))*100 + sunset % 100;
+			SimpleDateFormat format = new SimpleDateFormat("HHmm");
+			int curIntDate = Integer.parseInt(format.format(date));
+			if (curIntDate < sunrise || curIntDate > sunset) {
+				state = NIGHT;
+			} else if (pressure < 29900) { // unsure if low pressure = cloudiness?
+				state = CLOUDY;
+			}
+		}
+		
+		gui.setWeatherSummary(state);
 	}
 
 	/**

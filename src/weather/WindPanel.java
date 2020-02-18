@@ -38,6 +38,11 @@ public class WindPanel extends JPanel {
 	private Stroke myStroke;
 	
 	/**
+	 * The draw color
+	 */
+	private Color drawColor;
+	
+	/**
 	 * The constructor for the WindPanel
 	 * 
 	 * @param diam the diameter of the circular wind panel
@@ -98,7 +103,11 @@ public class WindPanel extends JPanel {
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                  RenderingHints.VALUE_STROKE_PURE);
 		
-		g2d.setColor(Color.BLACK);
+		if (drawColor == null) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(drawColor);
+		}
 		g2d.setStroke(myStroke);
 		
 		// only use 90% of the bounding rectangle in each dimension
@@ -119,5 +128,9 @@ public class WindPanel extends JPanel {
 		g2d.translate(-getWidth()/2.0, -getHeight()/2.0);
 		
 		g2d.dispose();
+	}
+	
+	public void setDrawColor(Color color) {
+		drawColor = color;
 	}
 }

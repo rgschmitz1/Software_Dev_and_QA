@@ -3,12 +3,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -92,19 +98,40 @@ public class WeatherGUI extends JFrame {
      */
     private JLabel sunsetReadout;
 
+    /**
+     * The background image
+     */
+    private Image background;
 
+    /**
+     * Previous weather summary state
+     */
+    private int summaryState;
+    
     /**
      * The method that will initialize the GUI to its default starting state.
      */
     public void start() {
-        
+    	summaryState = -1;
+    	this.setContentPane(new JPanel() {        	
+        	@Override
+        	public void paintComponent(Graphics g) {
+        		super.paintComponent(g);
+        		if (background != null) {
+        			g.drawImage(background, 0, 0, null);
+        		}
+        	}
+        });
+    	
         this.setTitle(TITLE);
         //this.setLayout(new FlowLayout());
         this.setLayout(new BorderLayout());
-
+        
         // Sets the initial size and position of the application window
         setSize(1200, 500);
         setLocationRelativeTo(null);
+        
+        
         
         JPanel tempPanel = new JPanel();
         tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -189,8 +216,15 @@ public class WeatherGUI extends JFrame {
         northLayoutPanel.add(sunrisePanel);
         northLayoutPanel.add(sunsetPanel);
 
+        windPanel.setOpaque(false);
+        moonPanel.setOpaque(false);
         eastLayoutPanel.add(windPanel);
         eastLayoutPanel.add(moonPanel);
+        
+        northLayoutPanel.setOpaque(false);
+        eastLayoutPanel.setOpaque(false);
+        southLayoutPanel.setOpaque(false);
+        graphPanel.setOpaque(false);
         
         add(northLayoutPanel, BorderLayout.NORTH);
         add(eastLayoutPanel, BorderLayout.EAST);
@@ -418,4 +452,68 @@ public class WeatherGUI extends JFrame {
 			graphPanel.setSensorType(type);
 		}
     }
+
+	public void setWeatherSummary(int state) {
+		if (state != summaryState) {
+			String imgName = "sunny";
+			
+			switch(state) {
+				case WeatherController.CLOUDY:
+					imgName = "cloudy";
+					break;
+				case WeatherController.COLD:
+					imgName = "cold";
+					break;
+				case WeatherController.DRY:
+					imgName = "dry";
+					break;
+				case WeatherController.NIGHT:
+					imgName = "night";
+					break;
+				case WeatherController.RAINY:
+					imgName = "rainy";
+					break;
+				case WeatherController.WINDY:
+					imgName = "windy";
+					break;
+			}
+			
+			URL url = getClass().getResource(String.format("/Backgrounds/%s.jpg", imgName));
+	        BufferedImage image;
+			try {
+				image = ImageIO.read(url);
+				Color avgColor = avgColor(image);
+				graphPanel.setDrawColor(avgColor);
+				windPanel.setDrawColor(avgColor);
+		        Image newImg = image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
+		        ImageIcon resizedIcon = new ImageIcon(newImg);
+		        background = resizedIcon.getImage();
+		        getContentPane().repaint();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	        
+	        summaryState = state;
+		}
+	}
+	
+	private Color avgColor(BufferedImage img) {
+		Raster raster = img.getData();
+		
+		double[] color = {0,0,0};
+		for (int y=0; y<raster.getHeight(); y++) {
+			for (int x=0; x<raster.getWidth(); x++) {
+				double[] curColor = new double[3];
+				raster.getPixel(x, y, curColor);
+				for (int i=0; i<color.length; i++) {
+					color[i] += curColor[i];
+				}
+			}
+		}
+		for (int i=0; i<color.length; i++) {
+			color[i] /= raster.getWidth() * raster.getHeight();
+		}
+		Color out = new Color(255-(int)color[0], 255-(int)color[1], 255-(int)color[2]);
+		return out;
+	}
 }

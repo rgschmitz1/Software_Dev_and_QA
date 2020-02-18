@@ -123,6 +123,11 @@ public class GraphPanel extends JPanel {
 	private int sensorType;
 	
 	/**
+	 * The draw color
+	 */
+	private Color drawColor;
+	
+	/**
 	 * The constructor, initializes the panel with everything needed for it to draw itself
 	 * 
 	 * @param width the width of the graph
@@ -223,7 +228,11 @@ public class GraphPanel extends JPanel {
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                  RenderingHints.VALUE_STROKE_PURE);
 		
-		g2d.setColor(Color.BLACK);
+		if (drawColor == null) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(drawColor);
+		}
 		g2d.setStroke(myStroke);
 		
 		// draw the background of the graph
@@ -316,5 +325,9 @@ public class GraphPanel extends JPanel {
 	 */
 	public int getSensorType() {
 		return sensorType;
+	}
+	
+	public void setDrawColor(Color color) {
+		drawColor = color;
 	}
 }

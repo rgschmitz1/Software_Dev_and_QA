@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +21,17 @@ import org.json.simple.parser.ParseException;
  * @version January 26, 2020
  */
 public class WeatherStation{
+	/**
+	 * Controls whether the station data is retrieved from the Weather API or
+	 * is randomly generated
+	 */
+	private static final boolean API_ENABLED = true;
+	
+	/**
+	 * Disables rain when randomly generating data for testing
+	 */
+	private static final boolean DISABLE_RAIN = false;
+	
 	/**
 	 * Stores the temperature value.
 	 */
@@ -57,9 +69,44 @@ public class WeatherStation{
 	private static String LOCATION = "Tacoma,US";
 	
 	/**
+	 * A random generator for generating the different values.
+	 */
+	private Random random;
+
+	/**
+	 * The minimum temperature value.
+	 */
+	private static final int MIN_TEMP = 100;
+
+	/**
+	 * The maximum temperature value.
+	 */
+	private static final int MAX_TEMP = 1000;
+
+	/**
+	 * The amount the temperature should deviate up/down.
+	 */
+	private static final double TEMP_DEV = 50.0;
+
+	/**
 	 * The offset for the packet. Tells us which byte the temperature is stored at.
 	 */
 	private static final int TEMP_OFFSET = 12;
+
+	/**
+	 * Minimum humidity value.
+	 */
+	private static final int MIN_HUMID = 0;
+
+	/**
+	 * Maximum humidity value.
+	 */
+	private static final int MAX_HUMID = 100;
+
+	/**
+	 * Deviation of the humidity value (up/down).
+	 */
+	private static final double HUMID_DEV = 20.0;
 
 	/**
 	 * The offset for the packet. Tells us which byte the humidity is stored at.
@@ -67,9 +114,39 @@ public class WeatherStation{
 	private static final int HUMID_OFFSET = 33;
 
 	/**
+	 * Minimum air (parametric) pressure value.
+	 */
+	private static final int MIN_PRESSURE = 29000;
+
+	/**
+	 * Maximum air (parametric) pressure value.
+	 */
+	private static final int MAX_PRESSURE = 31000;
+
+	/**
+	 * Deviation of the pressure value (Changes in up/down).
+	 */
+	private static final double PRESSURE_DEV = 200.0;
+
+	/**
 	 * The offset for the packet. Tells us which byte the pressure is stored at.
 	 */
 	private static final int PRESSURE_OFFSET = 7;
+
+	/**
+	 * Minimum WindSpeed value.
+	 */
+	private static final int MIN_WINDSPD = 0;
+
+	/**
+	 * Maximum WindSpeed value.
+	 */
+	private static final int MAX_WINDSPD = 60;
+
+	/**
+	 * Deviation of WindSpeed value.
+	 */
+	private static final double WINDSPD_DEV = 10.0;
 
 	/**
 	 * The offset for the packet. Tells us which byte the WindSpeed value is stored at.
@@ -77,9 +154,34 @@ public class WeatherStation{
 	private static final int WINDSPD_OFFSET = 14;
 
 	/**
+	 * The Wind Direction direction allowing 360 degrees.
+	 */
+	private static final int WINDDIR_MOD = 360;
+
+	/**
+	 * Deviation of Wind Direction.
+	 */
+	private static final double WINDDIR_DEV = 10.0;
+
+	/**
 	 * The byte offset for the packet data.
 	 */
 	private static final int WINDDIR_OFFSET = 16;
+
+	/**
+	 * Minimum Rain fall value.
+	 */
+	private static final int MIN_RAIN = 0;
+
+	/**
+	 * Maximum rain fall value.
+	 */
+	private static final int MAX_RAIN = 100;
+
+	/**
+	 * Deviation of rain fall.
+	 */
+	private static final double RAIN_DEV = 4;
 
 	/**
 	 * The offset for the packet. Tells us which byte the WindSpeed value is stored at.
@@ -106,6 +208,15 @@ public class WeatherStation{
 	 * Constructor that generate all the data values for each value.
 	 */
 	public WeatherStation() {
+		random = new Random();
+		temp = MIN_TEMP + random.nextInt(MAX_TEMP - MIN_TEMP);
+		humid = MIN_HUMID + random.nextInt(MAX_HUMID - MIN_HUMID);
+		pressure = MIN_PRESSURE + random.nextInt(MAX_PRESSURE - MIN_PRESSURE);
+		windspd = MIN_WINDSPD + random.nextInt(MAX_WINDSPD - MIN_WINDSPD);
+		winddir = random.nextInt(WINDDIR_MOD);
+		rain = MIN_RAIN + random.nextInt(MAX_RAIN - MIN_RAIN);
+		sunrise = (100*(5 + random.nextInt(3))) + random.nextInt(60);
+		sunset = (100*(5 + random.nextInt(3))) + random.nextInt(60);
 	}
 
 	/**
@@ -142,33 +253,48 @@ public class WeatherStation{
 	 */
 	@SuppressWarnings("rawtypes")
 	private void updateSensors() {
-		StringBuilder theUrl = new StringBuilder("http://api.openweathermap.org/data/2.5/weather?q=");
-		theUrl.append(LOCATION);
-		theUrl.append("&APPID=");
-		theUrl.append(APIKEY);
-		try {
-			URL url = new URL(theUrl.toString());
-			JSONObject jo;
-			jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
-			
-			double kelvTemp = (double)((Map)jo.get("main")).get("temp");
-			temp = (int)(10 * (kelvTemp * KELVIN_FAHRENHEIT_COEF + KELVIN_FAHRENHEIT_CONSTANT) + 0.5);
-			humid = (int)((long)((Map)jo.get("main")).get("humidity"));
-			long hpaPressure = (long)((Map)jo.get("main")).get("pressure");
-			pressure = (int)(1000 * hpaPressure * HPA_INHG_COEF + 0.5);
-			double msWindSpeed = (double)((Map)jo.get("wind")).get("speed");
-			windspd = (int)(msWindSpeed * MS_MPH_COEF + 0.5);
-			winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
-			Object rainObj = jo.get("rain");
-			if (rainObj != null) {
-				double mmRain = (double)((Map)rainObj).get("1h");
-				rain = (int)(mmRain * MM_IN_COEF + 0.5);
+		if (API_ENABLED) {
+			StringBuilder theUrl = new StringBuilder("http://api.openweathermap.org/data/2.5/weather?q=");
+			theUrl.append(LOCATION);
+			theUrl.append("&APPID=");
+			theUrl.append(APIKEY);
+			try {
+				URL url = new URL(theUrl.toString());
+				JSONObject jo;
+				jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
+				
+				double kelvTemp = (double)((Map)jo.get("main")).get("temp");
+				temp = (int)(10 * (kelvTemp * KELVIN_FAHRENHEIT_COEF + KELVIN_FAHRENHEIT_CONSTANT) + 0.5);
+				humid = (int)((long)((Map)jo.get("main")).get("humidity"));
+				long hpaPressure = (long)((Map)jo.get("main")).get("pressure");
+				pressure = (int)(1000 * hpaPressure * HPA_INHG_COEF + 0.5);
+				double msWindSpeed = (double)((Map)jo.get("wind")).get("speed");
+				windspd = (int)(msWindSpeed * MS_MPH_COEF + 0.5);
+				winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
+				Object rainObj = jo.get("rain");
+				if (rainObj != null) {
+					double mmRain = (double)((Map)rainObj).get("1h");
+					rain = (int)(mmRain * MM_IN_COEF + 0.5);
+				}
+				sunrise = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunrise")));
+				sunset = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunset")));
+			} catch (IOException | ParseException e) {
+				e.printStackTrace();
 			}
-			sunrise = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunrise")));
-			sunset = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunset")));
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else {
+			temp = getTemp() + (int)(random.nextGaussian() * TEMP_DEV + 0.5);
+			humid = getHumid() + (int)(random.nextGaussian() * HUMID_DEV + 0.5);
+			pressure = getPressure() + (int)(random.nextGaussian() * PRESSURE_DEV + 0.5);
+			windspd = getWindspd() + (int)(random.nextGaussian() * WINDSPD_DEV + 0.5);
+			winddir += (int)(random.nextGaussian() * WINDDIR_DEV + 0.5);
+			rain = DISABLE_RAIN ? 0 : rain + (int)(random.nextGaussian() * RAIN_DEV + 0.5);
+			
+			temp = Math.max(Math.min(getTemp(), MAX_TEMP), MIN_TEMP);
+			humid = Math.max(Math.min(getHumid(), MAX_HUMID), MIN_HUMID);
+			pressure = Math.max(Math.min(getPressure(), MAX_PRESSURE), MIN_PRESSURE);
+			windspd = Math.max(Math.min(getWindspd(), MAX_WINDSPD), MIN_WINDSPD);
+			winddir = (winddir + WINDDIR_MOD)%WINDDIR_MOD;
+			rain = Math.max(Math.min(rain, MAX_RAIN), MIN_RAIN);
 		}
 	}
 
