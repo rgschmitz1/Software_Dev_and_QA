@@ -55,7 +55,6 @@ public class WeatherStation{
 
 	private static String APIKEY = "03bd5a0f81e9de8ceab70cacdd93ae7b";
 	private static String LOCATION = "Tacoma,US";
-	private static int TIME_ZONE_HOURS_DIFF = 16;
 	
 	/**
 	 * The offset for the packet. Tells us which byte the temperature is stored at.
@@ -139,7 +138,7 @@ public class WeatherStation{
 	}
 
 	/**
-	 * Updates all the data values with a new ones.
+	 * Updates all the data values from the OpenWeatherMap API
 	 */
 	@SuppressWarnings("rawtypes")
 	private void updateSensors() {

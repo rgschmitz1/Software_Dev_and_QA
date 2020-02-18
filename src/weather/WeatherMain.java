@@ -1,7 +1,6 @@
 package weather;
 import java.awt.EventQueue;
 
-
 public class WeatherMain {
     /**
      * The constructor for the PowerPaintMain class, set private so it can't be instantiated.

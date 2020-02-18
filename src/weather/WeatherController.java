@@ -1,4 +1,7 @@
 package weather;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.Random;
@@ -72,6 +75,11 @@ public class WeatherController implements Runnable {
 	private WeatherGUI gui;
 
 	/**
+	 * Writes the weather data to a file.
+	 */
+	private PrintWriter writer;
+	
+	/**
 	 * The constructor for weather controller.
 	 * @param station the instance of the weather station.
 	 * @param gui the instance of the weather gui.
@@ -80,6 +88,12 @@ public class WeatherController implements Runnable {
 		this.station = station;
 		this.gui = gui;
 		random = new Random();
+		try {
+			writer = new PrintWriter(new File("weather.csv"));
+			writer.println("Date, temperature, humidity, pressure, wind speed, wind direction, rainfall");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -87,7 +101,7 @@ public class WeatherController implements Runnable {
 	 */
 	@Override
 	public void run() {
-		while(!Thread.interrupted()) {
+		while(writer != null && !Thread.interrupted()) {
 			byte[] packet = station.getNext();
 			
 			int temp = extractTemp(packet);
@@ -101,6 +115,10 @@ public class WeatherController implements Runnable {
 			int sunrise = extractSunrise(packet);
 			int sunset = extractSunset(packet);
 
+			String toWrite = dataToString(temp, humid, pressure, windspd, winddir, rain, date);
+			writer.println(toWrite);
+			writer.flush();
+			
 			gui.setTemp(temp);
 			gui.setHumid(humid);
 			gui.setPressure(pressure);
@@ -113,6 +131,33 @@ public class WeatherController implements Runnable {
 			gui.setSunset(sunset);
 			gui.graphTick();
 		}
+		writer.close();
+	}
+
+	/**
+	 * Formats the live weather data into a String.
+	 * 
+	 * @param temp the temperature
+	 * @param humid the humidity
+	 * @param pressure the pressure
+	 * @param windspd the wind speed
+	 * @param winddir the wind direction
+	 * @param moon the moon phase
+	 * @param rain the rainfall amount
+	 * @param date the current date
+	 * @return a string representing the live weather data
+	 */
+	private String dataToString(int temp, int humid, int pressure, int windspd, int winddir, int rain,
+			Date date) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(date + ", ");
+		sb.append(temp + ", ");
+		sb.append(humid + ", ");
+		sb.append(pressure + ", ");
+		sb.append(windspd + ", ");
+		sb.append(winddir + ", ");
+		sb.append(rain);
+		return sb.toString();
 	}
 
 	/**

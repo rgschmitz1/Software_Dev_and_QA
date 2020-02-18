@@ -294,7 +294,7 @@ public class GraphPanel extends JPanel {
 	 */
 	public void repaintGraph(int type) {
 		if (type == TEMP_SENSOR) {
-			prevVals = tempVals;	
+			prevVals = tempVals;
 		} else if (type == PRESSURE_SENSOR) {
 			prevVals = baroVals;
 		} else if (type == HUMIDITY_SENSOR) {
