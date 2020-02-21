@@ -52,7 +52,7 @@ public class RainfallTest {
 	public void testPositive() {
 		int rainfall = station.getRain();
 		boolean positive;
-		if (rainfall > 0) {
+		if (rainfall >= 0) {
 			positive = true;
 		} else {
 			positive = false;

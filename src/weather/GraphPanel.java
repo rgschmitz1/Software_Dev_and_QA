@@ -229,10 +229,9 @@ public class GraphPanel extends JPanel {
                  RenderingHints.VALUE_STROKE_PURE);
 		
 		if (drawColor == null) {
-			g2d.setColor(Color.BLACK);
-		} else {
-			g2d.setColor(drawColor);
+			drawColor = Color.BLACK;
 		}
+		g2d.setColor(drawColor);
 		g2d.setStroke(myStroke);
 		
 		// draw the background of the graph
@@ -242,6 +241,10 @@ public class GraphPanel extends JPanel {
 		
 		double divW = getWidth()/(double)(NUM_DIVS+1);
 		double divH = getHeight()/(double)(NUM_DIVS+1);
+		
+		//g2d.setColor(Color.GRAY);
+		//g2d.fillRect(0, 0, (int)(divW+0.5), (int)(getHeight() - divH + 0.5));
+		//g2d.setColor(drawColor);
 		
 		// draw the name of the sensor data type
 		g2d.translate(0, getHeight());
@@ -255,7 +258,7 @@ public class GraphPanel extends JPanel {
 		int max = SENSOR_MAXES[sensorType];		
 		double readMin = READING_MINS[sensorType];
 		double readMax = READING_MAXES[sensorType];
-				
+		
 		g2d.drawString(Double.toString(readMin), (float) divW - 40, (float) getHeight() - 35);
 		g2d.drawString(Double.toString(readMin + (readMax - readMin)/4), (float) divW - 40, (float) (divH-1)*8);
 		g2d.drawString("__", (float) divW-5, (float) ((divH-1)*8) - 10);

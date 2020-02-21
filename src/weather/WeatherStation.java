@@ -25,12 +25,12 @@ public class WeatherStation{
 	 * Controls whether the station data is retrieved from the Weather API or
 	 * is randomly generated
 	 */
-	private static final boolean API_ENABLED = true;
+	private static final boolean API_ENABLED = false;
 	
 	/**
 	 * Disables rain when randomly generating data for testing
 	 */
-	private static final boolean DISABLE_RAIN = false;
+	private static final boolean DISABLE_RAIN = true;
 	
 	/**
 	 * Stores the temperature value.

@@ -10,6 +10,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -479,12 +481,23 @@ public class WeatherGUI extends JFrame {
 			}
 			
 			URL url = getClass().getResource(String.format("/Backgrounds/%s.jpg", imgName));
-	        BufferedImage image;
+	        File f = new File(url.getPath());
+			BufferedImage image;
 			try {
 				image = ImageIO.read(url);
-				Color avgColor = avgColor(image);
-				graphPanel.setDrawColor(avgColor);
-				windPanel.setDrawColor(avgColor);
+				WritableRaster raster = image.getRaster();
+				for (int y=0; y<image.getHeight(); y++) {
+					for (int x=0; x<image.getWidth(); x++) {
+						float[] pixel = new float[3];
+						raster.getPixel(x, y, pixel);
+						for (int i=0; i<3; i++) {
+							pixel[i] = 255-pixel[i];
+							pixel[i] /= 5;
+							pixel[i] = 255-pixel[i];
+						}
+						raster.setPixel(x, y, pixel);
+					}
+				}
 		        Image newImg = image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH);
 		        ImageIcon resizedIcon = new ImageIcon(newImg);
 		        background = resizedIcon.getImage();

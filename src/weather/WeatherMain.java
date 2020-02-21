@@ -13,7 +13,7 @@ public class WeatherMain {
      * 
      * @param theArgs the unused command line arguments
      */
-    public static void main(final String[] theArgs) {        
+    public static void main(final String[] theArgs) {
         // start the GUI in a separate thread
     	WeatherGUI gui = new WeatherGUI();
         EventQueue.invokeLater(new Runnable() {
