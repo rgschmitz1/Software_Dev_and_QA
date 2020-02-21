@@ -21,13 +21,12 @@ import org.json.simple.parser.ParseException;
 
 public class MoonPhaseTest {
 	
-	public static String moonPhase() {
+	public int moonPhase() {
 		// Average moon phase period +/-0.27 days
 		BigDecimal moonPeriod = new BigDecimal("29.5305882");
 		// Divide moon phase by 2 to determine the current phase
 		moonPeriod = moonPeriod.divide(new BigDecimal("2"));
 		// JSON file containing moon phase data for 2020
-//		File file = new File(getClass().getClassLoader().getResource("/mooninfo_2020.json").getFile());
 		File file = new File("src/Lunar_Phases/mooninfo_2020.json");
 		// Fetch the current date and time
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH");
@@ -36,9 +35,7 @@ public class MoonPhaseTest {
 
 		// Parse JSON data for the current date and time, return 
 		try {
-//			URL url = new URL("https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004768/mooninfo_2020.json");
-//			JSONArray json = (JSONArray) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
-			JSONArray json = (JSONArray) new JSONParser().parse(new BufferedReader(new FileReader(file)));
+			JSONArray json = (JSONArray) new JSONParser().parse(new BufferedReader(new FileReader(file.toString())));
 			Pattern pattern = Pattern.compile(".*" + date + ".*");
 			for (int i=0; i < json.size(); i++) {
 				Matcher matcher = pattern.matcher(json.get(i).toString());
@@ -63,7 +60,7 @@ public class MoonPhaseTest {
 							break;
 						}
 					}
-					return currentPhase.remainder(new BigDecimal("8")).toString();
+					return currentPhase.intValue();
 				}
 			}
 
@@ -77,12 +74,13 @@ public class MoonPhaseTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return -1;
 	}
 	
 	public static void main(String[] args) {
 		// Get todays moon phase
-		System.out.println(moonPhase());
+		MoonPhaseTest mpt = new MoonPhaseTest();
+		System.out.println(mpt.moonPhase());
 	}
 
 }
