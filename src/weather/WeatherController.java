@@ -300,8 +300,8 @@ public class WeatherController implements Runnable {
 		// Divide moon phase by 2 to determine the current phase
 		moonPeriod = moonPeriod.divide(new BigDecimal("2"));
 		// JSON file containing moon phase data for 2020
-		File file = new File(getClass().getResource("/Lunar_Phases/mooninfo_2020.json").getFile());
-//		File file = new File("src/Lunar_Phases/mooninfo_2020.json");
+//		File file = new File(getClass().getResource("/Lunar_Phases/mooninfo_2020.json").getFile());
+		File file = new File("src/Lunar_Phases/mooninfo_2020.json");
 		// Fetch the current date and time
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
