@@ -316,15 +316,15 @@ public class WeatherController implements Runnable {
 					currentPhase = currentPhase.divide(new BigDecimal("25"), 0,  RoundingMode.HALF_UP);
 					BigDecimal age = new BigDecimal(moonPhase.get("age").toString());
 					if (age.compareTo(moonPeriod) == 1) {
-						switch(currentPhase.toString()) {
-						case "1":
-							currentPhase = currentPhase.add(new BigDecimal("6"));
+						switch(currentPhase.intValue()) {
+						case 1:
+							currentPhase = new BigDecimal("7");
 							break;
-						case "2":
-							currentPhase = currentPhase.add(new BigDecimal("4"));
+						case 2:
+							currentPhase = new BigDecimal("6");
 							break;
-						case "3":
-							currentPhase = currentPhase.add(new BigDecimal("2"));
+						case 3:
+							currentPhase = new BigDecimal("5");
 							break;
 						default:
 							break;
