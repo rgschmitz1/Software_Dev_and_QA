@@ -138,8 +138,8 @@ public class WeatherController implements Runnable {
 	@Override
 	public void run() {
 		while(writer != null && !Thread.interrupted()) {
-			String city = gui.getCity();
-			station.setCity(city);
+			station.setCity(gui.getCity());
+			gui.setTitleBar();
 			
 			byte[] packet = station.getNext();
 			
