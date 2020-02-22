@@ -66,7 +66,7 @@ public class WeatherStation{
 	private int sunset;
 
 	private static String APIKEY = "03bd5a0f81e9de8ceab70cacdd93ae7b";
-	private static String LOCATION = "Tacoma,US";
+	private static String DEFAULT_LOCATION = "Tacoma,US";
 	
 	/**
 	 * A random generator for generating the different values.
@@ -204,6 +204,11 @@ public class WeatherStation{
 	private static double MS_MPH_COEF = 2.23694;
 	private static double MM_IN_COEF = 0.0393701;
 	
+    /**
+     * This is a field that holds the location the station is currently monitoring
+     */
+	private String theLocation;
+	
 	/**
 	 * Constructor that generate all the data values for each value.
 	 */
@@ -217,6 +222,7 @@ public class WeatherStation{
 		rain = MIN_RAIN + random.nextInt(MAX_RAIN - MIN_RAIN);
 		sunrise = (100*(5 + random.nextInt(3))) + random.nextInt(60);
 		sunset = (100*(5 + random.nextInt(3))) + random.nextInt(60);
+		theLocation = DEFAULT_LOCATION;
 	}
 
 	/**
@@ -255,7 +261,7 @@ public class WeatherStation{
 	private void updateSensors() {
 		if (API_ENABLED) {
 			StringBuilder theUrl = new StringBuilder("http://api.openweathermap.org/data/2.5/weather?q=");
-			theUrl.append(LOCATION);
+			theUrl.append(theLocation);
 			theUrl.append("&APPID=");
 			theUrl.append(APIKEY);
 			try {
@@ -306,6 +312,15 @@ public class WeatherStation{
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime(date);
 		return 100 * calendar.get(Calendar.HOUR) + calendar.get(Calendar.MINUTE);
+	}
+	
+	/**
+	 * Used to set the location of the city the station is monitoring
+	 * 
+	 * @param theNewCity that is being monitored.
+	 */
+	public void setCity(String theNewCity) {
+		theLocation = theNewCity;
 	}
 	
 	/**
