@@ -1,9 +1,9 @@
 package weather;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Random;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -107,11 +106,6 @@ public class WeatherController implements Runnable {
 	 * Sunny weather state
 	 */
 	public static final int SUNNY = 6;
-	
-	/**
-	 * Random that will be used for moon phase.
-	 */
-	private Random random = new Random();
 
 	/**
 	 * An instance of WeatherStation.
@@ -136,7 +130,6 @@ public class WeatherController implements Runnable {
 	public WeatherController(WeatherStation station, WeatherGUI gui) {
 		this.station = station;
 		this.gui = gui;
-		random = new Random();
 		try {
 			writer = new PrintWriter(new File("weather.csv"));
 			writer.println("Date, temperature, humidity, pressure, wind speed, wind direction, rainfall");
@@ -150,8 +143,10 @@ public class WeatherController implements Runnable {
 	 */
 	@Override
 	public void run() {
-		// The moon phase calculation takes some time to complete,
-		// moving outside of the threaded loop
+		/**
+		 * The moon phase calculation takes some time to complete,
+		 * moving outside of the threaded loop
+		 */
 		int moon = extractMoonPhase();
 		while(writer != null && !Thread.interrupted()) {
 			byte[] packet = station.getNext();
@@ -161,7 +156,6 @@ public class WeatherController implements Runnable {
 			int pressure = extractPressure(packet);
 			int windspd = extractWindSpd(packet);
 			int winddir = extractWindDir(packet);
-//			int moon = extractMoonPhase();
 			int rain = extractRain(packet);
 			Date date = new Date();
 			int sunrise = extractSunrise(packet);
@@ -291,7 +285,7 @@ public class WeatherController implements Runnable {
 	}
 
 	/**
-	 * Generates random moon phase.
+	 * Fetches moon phase from json file.
 	 * @return and integer value of moon phase.
 	 */
 	private int extractMoonPhase() {
@@ -300,8 +294,7 @@ public class WeatherController implements Runnable {
 		// Divide moon phase by 2 to determine the current phase
 		moonPeriod = moonPeriod.divide(new BigDecimal("2"));
 		// JSON file containing moon phase data for 2020
-//		File file = new File(getClass().getResource("/Lunar_Phases/mooninfo_2020.json").getFile());
-		File file = new File("src/Lunar_Phases/mooninfo_2020.json");
+		InputStream file = getClass().getResourceAsStream("/Lunar_Phases/mooninfo_2020.json");
 		// Fetch the current date and time
 		SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy HH");
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -309,7 +302,7 @@ public class WeatherController implements Runnable {
 
 		// Parse JSON data for the current date and time, return 
 		try {
-			JSONArray json = (JSONArray) new JSONParser().parse(new BufferedReader(new FileReader(file)));
+			JSONArray json = (JSONArray) new JSONParser().parse(new BufferedReader(new InputStreamReader(file)));
 			Pattern pattern = Pattern.compile(".*" + date + ".*");
 			for (int i=0; i < json.size(); i++) {
 				Matcher matcher = pattern.matcher(json.get(i).toString());
@@ -337,19 +330,11 @@ public class WeatherController implements Runnable {
 					return currentPhase.intValue();
 				}
 			}
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
+		// Just tossed this in to make the compiler happy, code should never get here.
 		return -1;
-//		return random.nextInt(MAX_MOON_PHASE);
 	}
 
 	/**
