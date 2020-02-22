@@ -149,6 +149,9 @@ public class WeatherController implements Runnable {
 		 */
 		int moon = extractMoonPhase();
 		while(writer != null && !Thread.interrupted()) {
+			station.setCity(gui.getCity());
+			gui.setTitleBar();
+			
 			byte[] packet = station.getNext();
 			
 			int temp = extractTemp(packet);

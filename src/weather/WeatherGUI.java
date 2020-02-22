@@ -1,4 +1,5 @@
 package weather;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,23 +7,26 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 /**
  * The main GUI for the weather console.
@@ -44,6 +48,11 @@ public class WeatherGUI extends JFrame {
      * The number of moon phase images there are, will be used to create the ImageIcon array.
      */
     private static final int NUM_IMAGES = 8;
+    
+    /**
+     * Default location for fetching current weather
+     */
+    private static final String DEFAULT_LOCATION = "Tacoma,US";
 
     /**
      * Shows the temperature
@@ -109,9 +118,15 @@ public class WeatherGUI extends JFrame {
     private int summaryState;
     
     /**
+     * This is a field that holds the location the station is currently monitoring
+     */
+    private String theLocation;
+    
+    /**
      * The method that will initialize the GUI to its default starting state.
      */
-    public void start() {
+    @SuppressWarnings("serial")
+	public void start() {
     	summaryState = -1;
     	this.setContentPane(new JPanel() {        	
         	@Override
@@ -131,11 +146,11 @@ public class WeatherGUI extends JFrame {
         setSize(1200, 500);
         setLocationRelativeTo(null);
         
-        
+        theLocation = DEFAULT_LOCATION;
         
         JPanel tempPanel = new JPanel();
         tempPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        tempReadout = new JLabel("Temp: -- Â°F");
+        tempReadout = new JLabel("Temp: -- °F");
         tempPanel.add(tempReadout);
         
         JPanel humidPanel = new JPanel();
@@ -226,23 +241,101 @@ public class WeatherGUI extends JFrame {
         southLayoutPanel.setOpaque(false);
         graphPanel.setOpaque(false);
         
+        setJMenuBar(createMenuBar());
+        
         add(northLayoutPanel, BorderLayout.NORTH);
         add(eastLayoutPanel, BorderLayout.EAST);
         add(southLayoutPanel, BorderLayout.SOUTH);
         add(graphPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
         setVisible(true);
     }
     
+    public void setTitleBar() {
+    	this.setTitle(TITLE + " - " + getCity());
+    }
+    
     /**
+     * This is a private helper method that creates a menu bar that can be added onto a JFrame
+     * 
+     * @return the Menubar to be added to a JFrame
+     */
+    private JMenuBar createMenuBar() {
+    	final JMenuBar temp = new JMenuBar();
+    	final JMenu cityMenu = new JMenu("Cities");
+
+    	JRadioButton tacomaButton = new JRadioButton("Tacoma, WA");   
+    	JRadioButton seattleButton = new JRadioButton("Seattle, WA");        
+    	JRadioButton spokaneButton = new JRadioButton("Spokane, WA");
+    	JRadioButton anchorageButton = new JRadioButton("Anchorage, AK");
+    	JRadioButton mauiButton = new JRadioButton("Kahului, HI");
+
+    	final ButtonGroup btngrp = new ButtonGroup();
+
+    	btngrp.add(tacomaButton);
+    	btngrp.add(seattleButton);
+    	btngrp.add(spokaneButton);
+    	btngrp.add(anchorageButton);
+    	btngrp.add(mauiButton);
+
+    	tacomaButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			theLocation = "Tacoma,US";
+    		}
+    	});
+
+    	seattleButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			theLocation = "Seattle,US";
+    		}
+    	});
+
+    	spokaneButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			theLocation = "Spokane,US";
+    		}
+    	});
+
+    	anchorageButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			theLocation = "Anchorage,US";
+    		}
+    	});
+
+    	mauiButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			theLocation = "Kahului,US";
+    		}
+    	});
+
+    	tacomaButton.setSelected(true);
+
+    	cityMenu.add(tacomaButton);
+    	cityMenu.add(seattleButton);
+    	cityMenu.add(spokaneButton);
+    	cityMenu.add(anchorageButton);
+    	cityMenu.add(mauiButton);
+
+    	temp.add(cityMenu);
+
+    	return temp;
+	}
+
+	/**
      * Sets the temperature
      * 
      * @param temp the temperature to set
      */
     public void setTemp(int temp) {
     	String raw = Integer.toString(temp);
-    	tempReadout.setText("Temp: " + raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " Â°F");
+    	tempReadout.setText("Temp: " + raw.substring(0,raw.length()-1) + "." + raw.substring(raw.length()-1) + " °F");
     	if (graphPanel != null) {
     		graphPanel.updateSensorValue(GraphPanel.TEMP_SENSOR, temp);
     	}
@@ -408,6 +501,10 @@ public class WeatherGUI extends JFrame {
      */
     public String getSunset() {
     	return sunsetReadout.getText();
+    }
+    
+    public String getCity() {
+    	return theLocation;
     }
     
     public void graphTick() {
