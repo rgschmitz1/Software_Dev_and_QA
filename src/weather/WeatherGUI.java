@@ -10,9 +10,9 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
+//import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -578,7 +578,7 @@ public class WeatherGUI extends JFrame {
 			}
 			
 			URL url = getClass().getResource(String.format("/Backgrounds/%s.jpg", imgName));
-	        File f = new File(url.getPath());
+//	        File f = new File(url.getPath());
 			BufferedImage image;
 			try {
 				image = ImageIO.read(url);
@@ -607,23 +607,23 @@ public class WeatherGUI extends JFrame {
 		}
 	}
 	
-	private Color avgColor(BufferedImage img) {
-		Raster raster = img.getData();
-		
-		double[] color = {0,0,0};
-		for (int y=0; y<raster.getHeight(); y++) {
-			for (int x=0; x<raster.getWidth(); x++) {
-				double[] curColor = new double[3];
-				raster.getPixel(x, y, curColor);
-				for (int i=0; i<color.length; i++) {
-					color[i] += curColor[i];
-				}
-			}
-		}
-		for (int i=0; i<color.length; i++) {
-			color[i] /= raster.getWidth() * raster.getHeight();
-		}
-		Color out = new Color(255-(int)color[0], 255-(int)color[1], 255-(int)color[2]);
-		return out;
-	}
+//	private Color avgColor(BufferedImage img) {
+//		Raster raster = img.getData();
+//		
+//		double[] color = {0,0,0};
+//		for (int y=0; y<raster.getHeight(); y++) {
+//			for (int x=0; x<raster.getWidth(); x++) {
+//				double[] curColor = new double[3];
+//				raster.getPixel(x, y, curColor);
+//				for (int i=0; i<color.length; i++) {
+//					color[i] += curColor[i];
+//				}
+//			}
+//		}
+//		for (int i=0; i<color.length; i++) {
+//			color[i] /= raster.getWidth() * raster.getHeight();
+//		}
+//		Color out = new Color(255-(int)color[0], 255-(int)color[1], 255-(int)color[2]);
+//		return out;
+//	}
 }
