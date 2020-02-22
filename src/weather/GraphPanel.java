@@ -77,7 +77,7 @@ public class GraphPanel extends JPanel {
 	/**
 	 * The names of the respective sensors
 	 */
-	private static final String[] SENSOR_NAMES = {"Temp (Â°F)", "Pressure (in.)", "Humidity (%)", 
+	private static final String[] SENSOR_NAMES = {"Temp (°F)", "Pressure (in.)", "Humidity (%)", 
 							"Rainfall (in./hr.)", "Wind Speed (mph)"};
 	
 	/**
