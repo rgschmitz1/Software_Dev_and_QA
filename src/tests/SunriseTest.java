@@ -38,7 +38,7 @@ public class SunriseTest {
         Thread thread = new Thread(controller);
         thread.start();
 		try {
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

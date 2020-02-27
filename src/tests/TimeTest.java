@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class TimeTest {
         Thread thread = new Thread(controller);
         thread.start();
 		try {
-			Thread.sleep(3000);
+			TimeUnit.SECONDS.sleep(5);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
