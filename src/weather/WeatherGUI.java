@@ -29,6 +29,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
 
 /**
  * The main GUI for the weather console.
@@ -78,10 +79,6 @@ public class WeatherGUI extends JFrame {
     private WindPanel windPanel;
     /**
      * Shows the moon phase
-     */
-    private JLabel moonReadout;
-    /**
-     * Shows the moon phase text
      */
     private JLabel moonLabel;
     /**
@@ -169,11 +166,8 @@ public class WeatherGUI extends JFrame {
         windPanel = new WindPanel(getHeight()/9);
 
         JPanel moonPanel = new JPanel();
-        moonReadout = new JLabel();
-        moonReadout.setPreferredSize(new Dimension(110, 50));
         moonLabel = new JLabel();
         moonPanel.add(moonLabel);
-        moonPanel.add(moonReadout);
         moonPanel.setPreferredSize(new Dimension(190,50));
          
         JPanel rainPanel = new JPanel();
@@ -207,22 +201,22 @@ public class WeatherGUI extends JFrame {
         JPanel eastLayoutPanel = new JPanel();
         eastLayoutPanel.setLayout(new BoxLayout(eastLayoutPanel, BoxLayout.Y_AXIS));
 
-        JPanel southLayoutPanel = new JPanel();
-        southLayoutPanel.setLayout(new GridLayout(2, 4, 40, 20));
+//        JPanel southLayoutPanel = new JPanel();
+//        southLayoutPanel.setLayout(new GridLayout(2, 4, 40, 20));
 
         // Example Button addition into the South Panel Layout
         // ADD BUTTONS TO SOUTH PANEL.
-        JButton tempButton = new JButton(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Graph Temperature"));
-        JButton pressureButton = new JButton(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Graph Pressure"));
-        JButton humidityButton = new JButton(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Graph Humidity"));
-        JButton rainfallButton = new JButton(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Graph Rainfall"));
-        JButton windspeedButton = new JButton(new GraphButtonAction(GraphPanel.WIND_SENSOR, "Graph Wind Speed"));
+//        JButton tempButton = new JButton(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Graph Temperature"));
+//        JButton pressureButton = new JButton(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Graph Pressure"));
+//        JButton humidityButton = new JButton(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Graph Humidity"));
+//        JButton rainfallButton = new JButton(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Graph Rainfall"));
+//        JButton windspeedButton = new JButton(new GraphButtonAction(GraphPanel.WIND_SENSOR, "Graph Wind Speed"));
 	    
-        southLayoutPanel.add(tempButton);
-        southLayoutPanel.add(pressureButton);
-        southLayoutPanel.add(humidityButton);
-        southLayoutPanel.add(rainfallButton);
-        southLayoutPanel.add(windspeedButton);
+//        southLayoutPanel.add(tempButton);
+//        southLayoutPanel.add(pressureButton);
+//        southLayoutPanel.add(humidityButton);
+//        southLayoutPanel.add(rainfallButton);
+//        southLayoutPanel.add(windspeedButton);
 
         northLayoutPanel.add(tempPanel);
         northLayoutPanel.add(humidPanel);
@@ -240,14 +234,14 @@ public class WeatherGUI extends JFrame {
         
         northLayoutPanel.setOpaque(false);
         eastLayoutPanel.setOpaque(false);
-        southLayoutPanel.setOpaque(false);
+//        southLayoutPanel.setOpaque(false);
         graphPanel.setOpaque(false);
         
         setJMenuBar(createMenuBar());
         
         add(northLayoutPanel, BorderLayout.NORTH);
         add(eastLayoutPanel, BorderLayout.EAST);
-        add(southLayoutPanel, BorderLayout.SOUTH);
+//        add(southLayoutPanel, BorderLayout.SOUTH);
         add(graphPanel, BorderLayout.CENTER);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -268,19 +262,19 @@ public class WeatherGUI extends JFrame {
     	final JMenuBar temp = new JMenuBar();
     	final JMenu cityMenu = new JMenu("Cities");
 
-    	JRadioButton tacomaButton = new JRadioButton("Tacoma, WA");   
-    	JRadioButton seattleButton = new JRadioButton("Seattle, WA");        
-    	JRadioButton spokaneButton = new JRadioButton("Spokane, WA");
-    	JRadioButton anchorageButton = new JRadioButton("Anchorage, AK");
-    	JRadioButton mauiButton = new JRadioButton("Kahului, HI");
+    	JRadioButtonMenuItem tacomaButton = new JRadioButtonMenuItem("Tacoma, WA");   
+    	JRadioButtonMenuItem seattleButton = new JRadioButtonMenuItem("Seattle, WA");        
+    	JRadioButtonMenuItem spokaneButton = new JRadioButtonMenuItem("Spokane, WA");
+    	JRadioButtonMenuItem anchorageButton = new JRadioButtonMenuItem("Anchorage, AK");
+    	JRadioButtonMenuItem mauiButton = new JRadioButtonMenuItem("Kahului, HI");
 
-    	final ButtonGroup btngrp = new ButtonGroup();
+    	final ButtonGroup cityBtnGroup = new ButtonGroup();
 
-    	btngrp.add(tacomaButton);
-    	btngrp.add(seattleButton);
-    	btngrp.add(spokaneButton);
-    	btngrp.add(anchorageButton);
-    	btngrp.add(mauiButton);
+    	cityBtnGroup.add(tacomaButton);
+    	cityBtnGroup.add(seattleButton);
+    	cityBtnGroup.add(spokaneButton);
+    	cityBtnGroup.add(anchorageButton);
+    	cityBtnGroup.add(mauiButton);
 
     	tacomaButton.addActionListener(new ActionListener() {
     		@Override
@@ -326,6 +320,32 @@ public class WeatherGUI extends JFrame {
     	cityMenu.add(mauiButton);
 
     	temp.add(cityMenu);
+    	
+    	final JMenu graphMenu = new JMenu("Graph");
+    	
+    	JRadioButtonMenuItem tempButton = new JRadioButtonMenuItem(new GraphButtonAction(GraphPanel.TEMP_SENSOR, "Temperature"));
+    	JRadioButtonMenuItem pressureButton = new JRadioButtonMenuItem(new GraphButtonAction(GraphPanel.PRESSURE_SENSOR, "Pressure"));
+    	JRadioButtonMenuItem humidityButton = new JRadioButtonMenuItem(new GraphButtonAction(GraphPanel.HUMIDITY_SENSOR, "Humidity"));
+    	JRadioButtonMenuItem rainfallButton = new JRadioButtonMenuItem(new GraphButtonAction(GraphPanel.RAINFALL_SENSOR, "Rainfall"));
+    	JRadioButtonMenuItem windspeedButton = new JRadioButtonMenuItem(new GraphButtonAction(GraphPanel.WIND_SENSOR, "Wind Speed"));
+        
+    	final ButtonGroup graphBtnGroup = new ButtonGroup();
+
+    	tempButton.setSelected(true);
+    	
+    	graphBtnGroup.add(tempButton);
+    	graphBtnGroup.add(pressureButton);
+    	graphBtnGroup.add(humidityButton);
+    	graphBtnGroup.add(rainfallButton);
+    	graphBtnGroup.add(windspeedButton);
+    	
+    	graphMenu.add(tempButton);
+    	graphMenu.add(pressureButton);
+    	graphMenu.add(humidityButton);
+    	graphMenu.add(rainfallButton);
+    	graphMenu.add(windspeedButton);
+    	
+    	temp.add(graphMenu);
 
     	return temp;
 	}
@@ -399,12 +419,14 @@ public class WeatherGUI extends JFrame {
 
             ImageIcon icon = new ImageIcon(url);
             Image image =icon.getImage();
-            Image newImg = image.getScaledInstance(50,50, Image.SCALE_SMOOTH);
+            Image newImg = image.getScaledInstance(100,100, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(newImg);
             moonImages[i] = resizedIcon;
         }
 
-        moonReadout.setText(phases[moon]);
+        moonLabel.setText(phases[moon]);
+        moonLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        moonLabel.setHorizontalTextPosition(JLabel.CENTER);
         moonLabel.setIcon(moonImages[moon]);
     }
     
