@@ -187,7 +187,7 @@ public class WeatherGUI extends JFrame {
         
         JPanel timePanel = new JPanel();
         timePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        timeReadout = new JLabel("Time: --:--:-- a.m.");
+        timeReadout = new JLabel("Time: --:-- a.m.");
         timePanel.add(timeReadout);  
         
         JPanel sunrisePanel = new JPanel();
@@ -480,15 +480,15 @@ public class WeatherGUI extends JFrame {
     	int timePeriod = Integer.valueOf(raw.substring(11, 13));
     	if (timePeriod < 12) {
     		if (timePeriod == 0) {
-    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " AM");
+    			timeReadout.setText("Time: 12" + raw.substring(13, 16) + " AM");
     		} else {
-    			timeReadout.setText("Time: " + raw.substring(11, 19) + " AM");
+    			timeReadout.setText("Time: " + raw.substring(11, 16) + " AM");
     		}
     	} else {
     		if (timePeriod == 12) {
-    			timeReadout.setText("Time: 12" + raw.substring(13, 19) + " PM");
+    			timeReadout.setText("Time: 12" + raw.substring(13, 16) + " PM");
     		} else {
-    			timeReadout.setText("Time: " + Integer.toString((timePeriod-12)) + raw.substring(13, 19) + " PM");
+    			timeReadout.setText("Time: " + Integer.toString((timePeriod-12)) + raw.substring(13, 16) + " PM");
     		}
     	}	
     }

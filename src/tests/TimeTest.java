@@ -57,7 +57,7 @@ public class TimeTest {
 		String time = gui.getTime().substring(6);
 		Date currentTime = new Date();
 		
-		SimpleDateFormat format = new SimpleDateFormat("h:mm:ss a");		
+		SimpleDateFormat format = new SimpleDateFormat("h:mm a");		
 		try {
 			Date testTime = format.parse(time);
 			currentTime = format.parse(format.format(currentTime));
