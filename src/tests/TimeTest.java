@@ -62,7 +62,7 @@ public class TimeTest {
 			Date testTime = format.parse(time);
 			currentTime = format.parse(format.format(currentTime));
 			System.out.println(Math.abs(currentTime.getTime() - testTime.getTime()));
-			assertTrue(Math.abs(currentTime.getTime() - testTime.getTime()) < 5000L,
+			assertTrue(Math.abs(currentTime.getTime() - testTime.getTime()) <= 60000L,
 					"Failed: "+currentTime+" vs. "+testTime);
 		} catch (ParseException e) {
 			fail("failed to parse time");

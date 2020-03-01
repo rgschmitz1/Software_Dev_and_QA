@@ -276,7 +276,11 @@ public class WeatherStation{
 				pressure = (int)(1000 * hpaPressure * HPA_INHG_COEF + 0.5);
 				double msWindSpeed = (double)((Map)jo.get("wind")).get("speed");
 				windspd = (int)(msWindSpeed * MS_MPH_COEF + 0.5);
-				winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
+				if (((Map)jo.get("wind")).get("deg") != null) {
+					winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
+				} else {
+					winddir = 0;
+				}
 				Object rainObj = jo.get("rain");
 				if (rainObj != null) {
 					double mmRain = (double)((Map)rainObj).get("1h");
