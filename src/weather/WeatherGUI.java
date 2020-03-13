@@ -400,7 +400,7 @@ public class WeatherGUI extends JFrame {
      */
     public void setPressure(int pressure) {
     	String raw = Integer.toString(pressure);
-    	pressureReadout.setText("Pressure:" + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" inhg");
+    	pressureReadout.setText("Pressure: " + raw.substring(0,raw.length()-3) + "." + raw.substring(raw.length()-3)+" inhg");
     	if (graphPanel != null) {
     		graphPanel.updateSensorValue(GraphPanel.PRESSURE_SENSOR, pressure);
     	}

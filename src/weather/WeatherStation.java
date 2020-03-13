@@ -65,13 +65,13 @@ public class WeatherStation{
 	 */
 	private int sunset;
 
-	private static String APIKEY = "03bd5a0f81e9de8ceab70cacdd93ae7b";
-	private static String DEFAULT_LOCATION = "Tacoma,US";
+	private static final String APIKEY = "03bd5a0f81e9de8ceab70cacdd93ae7b";
+	private static final String DEFAULT_LOCATION = "Tacoma,US";
 	
 	/**
 	 * A random generator for generating the different values.
 	 */
-	private Random random;
+	private static final Random RANDOM = new Random();
 
 	/**
 	 * The minimum temperature value.
@@ -198,11 +198,15 @@ public class WeatherStation{
 	 */
 	private static final int SUNSET_OFFSET = 93;
 
-	private static double KELVIN_FAHRENHEIT_CONSTANT = -459.67;
-	private static double KELVIN_FAHRENHEIT_COEF = 9/5.0;
-	private static double HPA_INHG_COEF = 0.02953;
-	private static double MS_MPH_COEF = 2.23694;
-	private static double MM_IN_COEF = 0.0393701;
+	/**
+	 * Conversion coefficient from HPA to INHG units
+	 */
+	private static final double HPA_INHG_COEF = 0.02953;
+	
+	/**
+	 * Conversion coefficient from mm to inches
+	 */
+	private static final double MM_IN_COEF = 0.0393701;
 	
     /**
      * This is a field that holds the location the station is currently monitoring
@@ -213,15 +217,14 @@ public class WeatherStation{
 	 * Constructor that generate all the data values for each value.
 	 */
 	public WeatherStation() {
-		random = new Random();
-		temp = MIN_TEMP + random.nextInt(MAX_TEMP - MIN_TEMP);
-		humid = MIN_HUMID + random.nextInt(MAX_HUMID - MIN_HUMID);
-		pressure = MIN_PRESSURE + random.nextInt(MAX_PRESSURE - MIN_PRESSURE);
-		windspd = MIN_WINDSPD + random.nextInt(MAX_WINDSPD - MIN_WINDSPD);
-		winddir = random.nextInt(WINDDIR_MOD);
-		rain = MIN_RAIN + random.nextInt(MAX_RAIN - MIN_RAIN);
-		sunrise = (100*(5 + random.nextInt(3))) + random.nextInt(60);
-		sunset = (100*(5 + random.nextInt(3))) + random.nextInt(60);
+		temp = MIN_TEMP + RANDOM.nextInt(MAX_TEMP - MIN_TEMP);
+		humid = MIN_HUMID + RANDOM.nextInt(MAX_HUMID - MIN_HUMID);
+		pressure = MIN_PRESSURE + RANDOM.nextInt(MAX_PRESSURE - MIN_PRESSURE);
+		windspd = MIN_WINDSPD + RANDOM.nextInt(MAX_WINDSPD - MIN_WINDSPD);
+		winddir = RANDOM.nextInt(WINDDIR_MOD);
+		rain = MIN_RAIN + RANDOM.nextInt(MAX_RAIN - MIN_RAIN);
+		sunrise = (100*(5 + RANDOM.nextInt(3))) + RANDOM.nextInt(60);
+		sunset = (100*(5 + RANDOM.nextInt(3))) + RANDOM.nextInt(60);
 		theLocation = DEFAULT_LOCATION;
 	}
 
@@ -264,42 +267,50 @@ public class WeatherStation{
 			theUrl.append(theLocation);
 			theUrl.append("&APPID=");
 			theUrl.append(APIKEY);
+			theUrl.append("&units=imperial");
+			
 			try {
+				// Grab json from OpenWeatherMap API
 				URL url = new URL(theUrl.toString());
-				JSONObject jo;
-				jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
+				JSONObject jo = (JSONObject) new JSONParser().parse(new BufferedReader(new InputStreamReader(url.openStream())));
 				
-				double kelvTemp = (double)((Map)jo.get("main")).get("temp");
-				temp = (int)(10 * (kelvTemp * KELVIN_FAHRENHEIT_COEF + KELVIN_FAHRENHEIT_CONSTANT) + 0.5);
-				humid = (int)((long)((Map)jo.get("main")).get("humidity"));
-				long hpaPressure = (long)((Map)jo.get("main")).get("pressure");
-				pressure = (int)(1000 * hpaPressure * HPA_INHG_COEF + 0.5);
-				double msWindSpeed = (double)((Map)jo.get("wind")).get("speed");
-				windspd = (int)(msWindSpeed * MS_MPH_COEF + 0.5);
-				if (((Map)jo.get("wind")).get("deg") != null) {
-					winddir = (int)((long)((Map)jo.get("wind")).get("deg"));
+				// Fetch current forecast data
+				Map forecast = (Map) jo.get("main");
+				temp = (int) (10 * (double) forecast.get("temp"));
+				humid = ((Long) forecast.get("humidity")).intValue();
+				pressure = (int) (1000 * (long)forecast.get("pressure") * HPA_INHG_COEF + 0.5);
+				
+				// Fetch wind speed and direction data
+				Map wind = (Map)jo.get("wind");
+				windspd = ((Double) wind.get("speed")).intValue();
+				if (wind.get("deg") != null) {
+					winddir = (int)((long) wind.get("deg"));
 				} else {
 					winddir = 0;
 				}
-				Object rainObj = jo.get("rain");
+				
+				// Fetch rain data
+				Map rainObj = (Map) jo.get("rain");
 				if (rainObj != null) {
-					double mmRain = (double)((Map)rainObj).get("1h");
-					rain = (int)(mmRain * MM_IN_COEF + 0.5);
+					rain = (int)((Double) rainObj.get("1h") * MM_IN_COEF + 0.5);
 				} else {
 					rain = 0;
 				}
-				sunrise = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunrise")));
-				sunset = unixToVantageTime((long)(((Map)jo.get("sys")).get("sunset")));
+				
+				// Fetch sunrise/sunset data
+				Map sys = (Map)jo.get("sys");
+				sunrise = unixToVantageTime((long) (sys.get("sunrise")));
+				sunset = unixToVantageTime((long) (sys.get("sunset")));
 			} catch (IOException | ParseException e) {
 				e.printStackTrace();
 			}
 		} else {
-			temp = getTemp() + (int)(random.nextGaussian() * TEMP_DEV + 0.5);
-			humid = getHumid() + (int)(random.nextGaussian() * HUMID_DEV + 0.5);
-			pressure = getPressure() + (int)(random.nextGaussian() * PRESSURE_DEV + 0.5);
-			windspd = getWindspd() + (int)(random.nextGaussian() * WINDSPD_DEV + 0.5);
-			winddir += (int)(random.nextGaussian() * WINDDIR_DEV + 0.5);
-			rain = DISABLE_RAIN ? 0 : rain + (int)(random.nextGaussian() * RAIN_DEV + 0.5);
+			temp = getTemp() + (int)(RANDOM.nextGaussian() * TEMP_DEV + 0.5);
+			humid = getHumid() + (int)(RANDOM.nextGaussian() * HUMID_DEV + 0.5);
+			pressure = getPressure() + (int)(RANDOM.nextGaussian() * PRESSURE_DEV + 0.5);
+			windspd = getWindspd() + (int)(RANDOM.nextGaussian() * WINDSPD_DEV + 0.5);
+			winddir += (int)(RANDOM.nextGaussian() * WINDDIR_DEV + 0.5);
+			rain = DISABLE_RAIN ? 0 : rain + (int)(RANDOM.nextGaussian() * RAIN_DEV + 0.5);
 			
 			temp = Math.max(Math.min(getTemp(), MAX_TEMP), MIN_TEMP);
 			humid = Math.max(Math.min(getHumid(), MAX_HUMID), MIN_HUMID);
