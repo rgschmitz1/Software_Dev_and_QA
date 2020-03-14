@@ -292,7 +292,7 @@ public class WeatherStation{
 				// Fetch rain data
 				Map rainObj = (Map) jo.get("rain");
 				if (rainObj != null) {
-					rain = (int)((Double) rainObj.get("1h") * MM_IN_COEF + 0.5);
+					rain = (int)(10 * (double) rainObj.get("1h") * MM_IN_COEF + 0.5);
 				} else {
 					rain = 0;
 				}
