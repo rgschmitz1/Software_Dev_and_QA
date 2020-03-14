@@ -267,6 +267,13 @@ public class WeatherStation{
 			theUrl.append(theLocation);
 			theUrl.append("&APPID=");
 			theUrl.append(APIKEY);
+			
+			/*
+			 * Project 3, Deliveries, Q4: Refactored code lines 275-308 below to output
+			 *   temperature and wind speed without unnecessary conversions.
+			 *   Removed some code complexity and added comments to make things
+			 *   a bit easier to understand.
+			 */
 			theUrl.append("&units=imperial");
 			
 			try {
