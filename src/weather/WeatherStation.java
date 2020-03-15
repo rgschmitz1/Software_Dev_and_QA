@@ -25,7 +25,7 @@ public class WeatherStation{
 	 * Controls whether the station data is retrieved from the Weather API or
 	 * is randomly generated
 	 */
-	private static final boolean API_ENABLED = true;
+	private boolean API_ENABLED;
 	
 	/**
 	 * Disables rain when randomly generating data for testing
@@ -216,7 +216,8 @@ public class WeatherStation{
 	/**
 	 * Constructor that generate all the data values for each value.
 	 */
-	public WeatherStation() {
+	public WeatherStation(boolean enabled) {
+		API_ENABLED = enabled;
 		temp = MIN_TEMP + RANDOM.nextInt(MAX_TEMP - MIN_TEMP);
 		humid = MIN_HUMID + RANDOM.nextInt(MAX_HUMID - MIN_HUMID);
 		pressure = MIN_PRESSURE + RANDOM.nextInt(MAX_PRESSURE - MIN_PRESSURE);

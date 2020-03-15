@@ -22,7 +22,7 @@ public class WeatherMain {
             }
         });
         
-        WeatherStation station = new WeatherStation();
+        WeatherStation station = new WeatherStation(true);
         WeatherController controller = new WeatherController(station, gui);
         
         Thread thread = new Thread(controller);

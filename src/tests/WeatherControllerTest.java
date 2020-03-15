@@ -26,7 +26,7 @@ class WeatherControllerTest {
 	 */
 	@Test
 	void testWeatherController() {
-		new WeatherController(new WeatherStation(), new WeatherGUI());
+		new WeatherController(new WeatherStation(true), new WeatherGUI());
 	}
 
 	/**
@@ -35,7 +35,7 @@ class WeatherControllerTest {
 	@Test
 	void testRun() {
 		@SuppressWarnings("serial")
-		WeatherController wc = new WeatherController(new WeatherStation() {public byte[] getNext() {
+		WeatherController wc = new WeatherController(new WeatherStation(true) {public byte[] getNext() {
 				byte[] out = {0, 0, 0, 0, 0, 0, 0, 120, -105, 0, 0, 0, 0, 100, 13, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 86, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 11, 7, 15, 0, 0, 0, 0};
 				return out;
 			}},

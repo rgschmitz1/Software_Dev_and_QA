@@ -37,7 +37,7 @@ public class TimeTest {
                 gui.start();
             }
         });
-        station = new WeatherStation();
+        station = new WeatherStation(true);
         controller = new WeatherController(station, gui);
         
         Thread thread = new Thread(controller);

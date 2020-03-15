@@ -16,17 +16,23 @@ import weather.WeatherStation;
  */
 class WeatherStationTest {
 
-/**
- * The weather station on which the tests will be run
- */
-private WeatherStation myWeatherStation;
+	/**
+	 * The weather station on which the tests will be run
+	 */
+	private WeatherStation myWeatherStation;
+	
+	/**
+	 * The weather station "proxy" which will test with fake data
+	 */
+	private WeatherStation myWeatherStationProxy;
 
 	/**
 	 * Initializes the weather station before each test
 	 */
 	@BeforeEach
 	public void setup() {
-	myWeatherStation = new WeatherStation();
+		myWeatherStation = new WeatherStation(true);
+		myWeatherStationProxy = new WeatherStation(false);
 	}
 	
 	/**
@@ -50,9 +56,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testtemp() {
-		
-			assertEquals(1000, myWeatherStation.getTemp(), 1000);
-		
+		assertEquals(1000, myWeatherStation.getTemp(), 1000);
 	} 
 	
 	/**
@@ -68,7 +72,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testpressure() {
-			assertEquals(30000, myWeatherStation.getPressure(), 30000);
+		assertEquals(30000, myWeatherStation.getPressure(), 30000);
 	}
 	
 	/**
@@ -76,9 +80,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testwindspd() {
-	
-			assertEquals(30, myWeatherStation.getWindspd(), 30);
-		
+		assertEquals(30, myWeatherStation.getWindspd(), 30);
 	}
 	
 	/**
@@ -86,9 +88,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testwinddir() {
-
-			assertEquals(60, myWeatherStation.getHumid(), 60);
-		
+		assertEquals(60, myWeatherStation.getHumid(), 60);
 	}
 	
 	/**
@@ -96,9 +96,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testrain() {
-	
-			assertEquals(60, myWeatherStation.getRain(), 60);
-	
+		assertEquals(60, myWeatherStation.getRain(), 60);
 	}
 	
 	/**
@@ -106,8 +104,7 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testsunrise() {
-			assertEquals(10000, myWeatherStation.getSunrise(), 10000);
-		
+		assertEquals(10000, myWeatherStation.getSunrise(), 10000);
 	}
 	
 	/**
@@ -115,6 +112,28 @@ private WeatherStation myWeatherStation;
 	 */
 	@Test
 	public void testsunset() {
-			assertEquals(1000, myWeatherStation.getSunset(), 1000);
+		assertEquals(1000, myWeatherStation.getSunset(), 1000);
+	}
+	
+	/*
+	 * Project 3, Deliveries, Q3: Added two new test for WeatherStation
+	 *   getNext() and setCity() were never tested in project 2
+	 */
+	
+	/**
+	 * Test the getNext method correctly returns the correct packet size
+	 */
+	@Test
+	public void testGetNext() {
+		assertEquals(99, myWeatherStation.getNext().length);
+		assertEquals(99, myWeatherStationProxy.getNext().length);
+	}
+	
+	/**
+	 * Test setCity method in WeatherStation
+	 */
+	@Test
+	public void testSetCity() {
+		myWeatherStation.setCity("Tacoma,US");
 	}
 }
