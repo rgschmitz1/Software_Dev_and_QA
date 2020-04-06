@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import VantageVue.WeatherStation;
 
-public class WeatherStationTest {
+public class WeatherStationPrj01Test {
 	
 	/** Setup WeatherStation object **/
 	private WeatherStation myWeatherStation;
